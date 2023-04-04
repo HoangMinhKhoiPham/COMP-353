@@ -63,16 +63,14 @@ $statement->execute(); //executes the query above
                       <td scope = "row" style="font-size:10px"><?= $row["address"] ?></td>
                       <td scope = "row" style="font-size:10px"><?= $row["postalCode"] ?></td>
                       <td>
-                        <a href="#" style="font-size:small"> Delete </a>
-                        <a href="#" style="font-size:small"> Edit </a>
+                        <a style="font-size:10px" href="deleteEmployee.php?ID=<?= $row["ID"] ?>"> Delete </a>
+                        <a style="font-size:10px" href="editEmployee.php?ID=<?= $row["ID"] ?>"> Edit </a>
                       </td>
-                    <tr>
+                  </tr>
                   <?php } ?>
                 </tbody>
               </table>
               <div>
-          <div>
-          <div id = "footer">
               <?php include 'footer.php';?>
           <div>
       <div>

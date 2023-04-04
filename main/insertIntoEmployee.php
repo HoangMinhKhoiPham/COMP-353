@@ -1,10 +1,10 @@
 <?php
 require_once '../database.php';
 
-$NbOfEmployee = $conn->prepare('SELECT COUNT(*) FROM comp353proj.Employee');
-$NbOfEmployee->execute();
-$employee_count = $NbOfEmployee->fetchColumn();
-$id = $employee_count + 1;
+$maxIDFetch = $conn->prepare('SELECT max(Employee.ID) FROM comp353proj.Employee');
+$maxIDFetch->execute();
+$maxEmployeeID = $maxIDFetch->fetchColumn();
+$id = $maxEmployeeID + 1;
 
 // if (isset($_POST["firstName"]) && isset($_POST["lastName"]) && isset($_POST["dateOfBirth"]) && isset($_POST["medicareCardNumber"]) && 
 // isset($_POST["employeeRole"]) && isset($_POST["telephoneNumber"]) && isset($_POST["citizenship"]) && isset($_POST["email"]) && 
@@ -53,18 +53,16 @@ if(isset($_POST['submit'])){
 
     // bind the parameters
     $sql = "INSERT INTO comp353proj.Employee (ID, firstName, lastName, dateOfBirth,medicareCardNumber, employeeRole, telephoneNumber, citizenship, email, country, province, city, address, postalCode) VALUES ($id, '$firstName', '$lastName', '$dateOfBirth', '$medicareCardNumber', '$employeeRole', '$telephoneNumber', '$citizenship', '$email', '$country', '$province', '$city', '$address', '$postalCode');";
-    // $conn->query($sql);
     // mysqli_query($conn, $sql)
 
     // execute the statement
     if($conn->query($sql) == TRUE){
-        echo "Entries added";
+        // echo "Entries added";
+        $success = true;
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        // echo "Error: " . $sql . "<br>" . $conn->error;
+        $success = false;
     }
-
-    // close the statement
-    // $stmt->close();
 }
 
 ?>
@@ -96,25 +94,25 @@ if(isset($_POST['submit'])){
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="firstName">First Name</label>
-                        <input type="text" class="form-control" id="firstName" name = "firstName" placeholder="FirstName">
+                        <input type="text" class="form-control" id="firstName" name = "firstName" placeholder="FirstName" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="lastName">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" name = "lastName" placeholder="LastName">
+                        <input type="text" class="form-control" id="lastName" name = "lastName" placeholder="LastName" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
                         <label for="dateOfBirth">Date Of Birth (YYYY-MM-DD)</label>
-                        <input type="text" class="form-control" id="dateOfBirth" name = "dateOfBirth" placeholder="YYYY-MM-DD">
+                        <input type="text" class="form-control" id="dateOfBirth" name = "dateOfBirth" placeholder="YYYY-MM-DD" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="medicareCardNumber">MedicareCardNumber</label>
-                        <input type="text" class="form-control" id="medicareCardNumber" name = "medicareCardNumber" placeholder="MedicareCardNumber">
+                        <input type="text" class="form-control" id="medicareCardNumber" name = "medicareCardNumber" placeholder="MedicareCardNumber" required>
                     </div>
                     <div class="form-group col-md-4">
                     <label for="employeeRole">Employee Role</label>
-                    <select class="form-select" aria-label="Default select example"id="employeeRole" name = "employeeRole">
+                    <select class="form-select" aria-label="Default select example"id="employeeRole" name = "employeeRole" required>
                         <option value="receptionist">Receptionist</option>
                         <option value="pharmacist">Pharmacist</option>
                         <option value="security_personnel">Security personnel</option>
@@ -127,17 +125,17 @@ if(isset($_POST['submit'])){
                     </div>
                     <div class="form-group col-md-3">
                         <label for="telephoneNumber">Telephone Number</label>
-                        <input type="text" class="form-control" id="telephoneNumber" name = "telephoneNumber" placeholder="xxx-xxx-xxxx">
+                        <input type="text" class="form-control" id="telephoneNumber" name = "telephoneNumber" placeholder="xxx-xxx-xxxx" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="citizenship">Citizenship</label>
-                        <input type="text" class="form-control" id="citizenship" name = "citizenship" placeholder="Citizenship">
+                        <input type="text" class="form-control" id="citizenship" name = "citizenship" placeholder="Citizenship" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" name = "email" placeholder="Email Address">
+                        <input type="email" class="form-control" id="email" name = "email" placeholder="Email Address" required>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="country">Country</label>
@@ -147,15 +145,15 @@ if(isset($_POST['submit'])){
                 <div class="form-row">
                     <div class="form-group col-md-2">
                     <label for="province">Province</label>
-                    <input type="text" class="form-control" id="province" name = "province" placeholder = "Province">
+                    <input type="text" class="form-control" id="province" name = "province" placeholder = "Province" required>
                     </div>
                     <div class="form-group col-md-2">
                     <label for="city">City</label>
-                    <input type="text" class="form-control" id="city" name = "city" placeholder = "City">
+                    <input type="text" class="form-control" id="city" name = "city" placeholder = "City" required>
                     </div>                    
                     <div class="form-group col-md-6">
                     <label for="address">Address</label>
-                    <input type="text" class="form-control" id="address" name = "address" placeholder = "Address">
+                    <input type="text" class="form-control" id="address" name = "address" placeholder = "Address" required>
                     </div>
                     <div class="form-group col-md-2">
                     <label for="postalCode">Postal Code</label>
@@ -163,7 +161,15 @@ if(isset($_POST['submit'])){
                     </div>
                 </div>
                 <button type="submit" value="Submit" name = "submit" class="btn btn-primary">Submit</button>
-                </form>
+                <?php
+                    if ($success == true) {
+                        echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Entry Added</h3>';
+                    }
+                    else {
+                        echo "";
+                    }
+                ?>
+            </form>
                 <div>
             <div>
           <div id = "footer">

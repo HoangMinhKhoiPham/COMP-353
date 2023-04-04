@@ -25,13 +25,13 @@
       <li class="nav-item active">
         <div class="dropdown">
           <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          Display Tables
+          Employee
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="../main/displayEmployees.php">Display Employee</a></li>
-          <li><a class="dropdown-item" href="#">Display Facility</a></li>
-          <li><a class="dropdown-item" href="#">Display Vaccine</a></li>
-          <li><a class="dropdown-item" href="#">Display Infection</a></li>
+          <li><a class="dropdown-item" href="displayEmployees.php">Display Employee</a></li>
+          <li><a class="dropdown-item" href="insertIntoEmployee.php">Insert Into Employee</a></li>
+          <li><a class="dropdown-item" href="editEmployee.php">Edit Employee</a></li>
+          <li><a class="dropdown-item" href="#">Delete Employee</a></li>
           </ul>
         </div>
       </li>
@@ -39,13 +39,13 @@
       <li class="nav-item active">
         <div class="dropdown">
           <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          Insert Into Tables
+          Facility
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="insertIntoEmployee.php">Insert Into Employee</a></li>
+          <li><a class="dropdown-item" href="#">Display Facility</a></li>
           <li><a class="dropdown-item" href="#">Insert Into Facility</a></li>
-          <li><a class="dropdown-item" href="#">Insert Into Vaccine</a></li>
-          <li><a class="dropdown-item" href="#">Insert Into Infection</a></li>
+          <li><a class="dropdown-item" href="#">Edit Facility</a></li>
+          <li><a class="dropdown-item" href="#">Delete Facility</a></li>
           </ul>
         </div>
       </li>
