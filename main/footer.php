@@ -32,6 +32,7 @@
   <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
     © 2023 Copyright:
     <a class="text-white">Facility Resource Management App</a>
+    <p>easteregg</p>
   </div>
   <!-- Copyright -->
 </footer>
