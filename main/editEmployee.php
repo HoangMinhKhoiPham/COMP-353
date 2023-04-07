@@ -1,10 +1,10 @@
 <?php
 require_once '../database.php';
 
-$maxIDFetch = $conn->prepare('SELECT max(Employee.ID) FROM comp353proj.Employee');
-$maxIDFetch->execute();
-$maxEmployeeID = $maxIDFetch->fetchColumn();
-$id = $maxEmployeeID + 1;
+$statement = $conn->prepare('SELECT * FROM comp353proj.Employee WHERE Employee.ID = :EmployeeID;');
+$statement->bindParam(":EmployeeID", $_GET["ID"]);
+$statement->execute(); //executes the query above
+$id = $_GET["ID"];
 
 if(isset($_POST['submit'])){
     $firstName = $_POST['firstName'];
@@ -21,40 +21,51 @@ if(isset($_POST['submit'])){
     $address = $_POST['address'];
     $postalCode = $_POST['postalCode'];
 
-    // prepare the statement
-    $sql = "INSERT INTO comp353proj.Employee (ID, firstName, lastName, dateOfBirth,medicareCardNumber, employeeRole, telephoneNumber, citizenship, email, country, province, city, address, postalCode) VALUES (:id, :firstName, :lastName, :dateOfBirth, :medicareCardNumber, :employeeRole, :telephoneNumber, :citizenship, :email, :country, :province, :city, :address, :postalCode)";
-    $stmt = $conn->prepare($sql);
-
     // bind the parameters
-    $stmt->bindParam(':id', $id);
-    $stmt->bindParam(':firstName', $firstName);
-    $stmt->bindParam(':lastName', $lastName);
-    $stmt->bindParam(':dateOfBirth', $dateOfBirth);
-    $stmt->bindParam(':medicareCardNumber', $medicareCardNumber);
-    $stmt->bindParam(':employeeRole', $employeeRole);
-    $stmt->bindParam(':telephoneNumber', $telephoneNumber);
-    $stmt->bindParam(':citizenship', $citizenship);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':country', $country);
-    $stmt->bindParam(':province', $province);
-    $stmt->bindParam(':city', $city);
-    $stmt->bindParam(':address', $address);
-    $stmt->bindParam(':postalCode', $postalCode);
+    $sql = "UPDATE comp353proj.Employee 
+        SET 
+        firstName = :firstName,
+        lastName = :lastName,
+        dateOfBirth = :dateOfBirth,
+        medicareCardNumber = :medicareCardNumber,
+        employeeRole = :employeeRole,
+        telephoneNumber = :telephoneNumber,
+        citizenship = :citizenship,
+        email = :email,
+        country = :country,
+        province = :province,
+        city = :city,
+        address = :address,
+        postalCode = :postalCode
+        WHERE ID = :id;";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(":firstName", $firstName);
+    $stmt->bindParam(":lastName", $lastName);
+    $stmt->bindParam(":dateOfBirth", $dateOfBirth);
+    $stmt->bindParam(":medicareCardNumber", $medicareCardNumber);
+    $stmt->bindParam(":employeeRole", $employeeRole);
+    $stmt->bindParam(":telephoneNumber", $telephoneNumber);
+    $stmt->bindParam(":citizenship", $citizenship);
+    $stmt->bindParam(":email", $email);
+    $stmt->bindParam(":country", $country);
+    $stmt->bindParam(":province", $province);
+    $stmt->bindParam(":city", $city);
+    $stmt->bindParam(":address", $address);
+    $stmt->bindParam(":postalCode", $postalCode);
+    $stmt->bindParam(":id", $id);
 
     // execute the statement
-    if($stmt->execute()){
+    if($stmt->execute() == TRUE){
         // echo "Entries added";
         $success = true;
     } else {
-        // echo "Error: " . $stmt->errorInfo()[2];
+        // echo "Error: " . $sql . "<br>" . $conn->error;
         $success = false;
     }
 }
 
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -74,7 +85,7 @@ if(isset($_POST['submit'])){
               <?php include 'navBar.php';?>
               <?php include 'searchBar.php';?>
               
-              <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> Insert an employee record </h1>
+              <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> Update an employee record </h1>
               <div id = "insertEmployeeForm" style="margin-top:10px">
 
               <form style="width:100%; padding:30px" method="POST" >
@@ -100,14 +111,14 @@ if(isset($_POST['submit'])){
                     <div class="form-group col-md-4">
                     <label for="employeeRole">Employee Role</label>
                     <select class="form-select" aria-label="Default select example"id="employeeRole" name = "employeeRole" required>
-                        <option value="receptionist">Receptionist</option>
-                        <option value="pharmacist">Pharmacist</option>
-                        <option value="security_personnel">Security personnel</option>
-                        <option value="cashier">Cashier</option>
-                        <option value="doctor">Doctor</option>
-                        <option value="nurse">Nurse</option>
-                        <option value="administrative_personnel">Administrative personnel</option>
-                        <option selected value="regular_employee">Regular employee</option>
+                        <option value="Receptionist">Receptionist</option>
+                        <option value="Pharmacist">Pharmacist</option>
+                        <option value="Security personnel">Security personnel</option>
+                        <option value="Cashier">Cashier</option>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Nurse">Nurse</option>
+                        <option value="Administrative personnel">Administrative personnel</option>
+                        <option selected value="Regular employee">Regular employee</option>
                     </select>
                     </div>
                     <div class="form-group col-md-3">
@@ -150,7 +161,7 @@ if(isset($_POST['submit'])){
                 <button type="submit" value="Submit" name = "submit" class="btn btn-primary">Submit</button>
                 <?php
                     if ($success == true) {
-                        echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Entry Added</h3>';
+                        echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Update Successful</h3>';
                     }
                     else {
                         echo "";

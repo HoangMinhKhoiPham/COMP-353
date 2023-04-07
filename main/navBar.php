@@ -30,8 +30,6 @@
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item" href="displayEmployees.php">Display Employee</a></li>
           <li><a class="dropdown-item" href="insertIntoEmployee.php">Insert Into Employee</a></li>
-          <li><a class="dropdown-item" href="editEmployee.php">Edit Employee</a></li>
-          <li><a class="dropdown-item" href="#">Delete Employee</a></li>
           </ul>
         </div>
       </li>
@@ -44,15 +42,24 @@
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item" href="#">Display Facility</a></li>
           <li><a class="dropdown-item" href="#">Insert Into Facility</a></li>
-          <li><a class="dropdown-item" href="#">Edit Facility</a></li>
-          <li><a class="dropdown-item" href="#">Delete Facility</a></li>
           </ul>
         </div>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+      <li class="nav-item active">
+        <div class="dropdown">
+          <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          Queries
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item" href="querySix.php">Query No.6</a></li>
+          <li><a class="dropdown-item" href="queryTen.php">Query No.10</a></li>
+          <li><a class="dropdown-item" href="queryFourteen.php">Query No.14</a></li>
+          <li><a class="dropdown-item" href="queryEighteen.php">Query No.18</a></li>
+          </ul>
+        </div>
       </li>
+
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Dropdown
