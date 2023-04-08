@@ -1,6 +1,6 @@
-<?php require_once '../database.php';
+<?php require_once '../../database.php';
 $statement = $conn->prepare('SELECT f.*, count(wa.employeeID) as numberOfEmployees
-FROM comp353proj.Facilities f, comp353proj.WorksAt wa 
+FROM '.DBNAME.'.Facilities f, '.DBNAME.'.WorksAt wa 
 where f.id = wa.facilityID
 group by f.id
 ORDER BY f.province ASC, f.city ASC, f.facilityType ASC, numberOfEmployees ASC;'); // to change to school database name
@@ -16,7 +16,7 @@ $statement->execute(); //executes the query above
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DisplayFacilityTable</title>
-    <link rel ="stylesheet" href="displayEmployees.css">
+    <link rel ="stylesheet" href="../../css/displayTable.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
@@ -24,8 +24,8 @@ $statement->execute(); //executes the query above
 
   <div id = "page-container">
           <div id = "page-wrap">
-              <?php include 'navBar.php';?>
-              <?php include 'searchBar.php';?>
+              <?php include '../navBar.php';?>
+              <?php include '../searchBar.php';?>
               
               <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> Facility (Query 6) </h1>
               <div class="table-condensed">
@@ -64,7 +64,7 @@ $statement->execute(); //executes the query above
                 </tbody>
               </table>
               <div>
-              <?php include 'footer.php';?>
+              <?php include '../footer.php';?>
           <div>
       <div>
 </body>

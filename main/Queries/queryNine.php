@@ -1,4 +1,4 @@
-<?php require_once '../database.php';
+<?php require_once '../../database.php';
 $statement = $conn->prepare("SELECT e.firstName, e.lastName, ic.dateOfInfection, f.facilityName
 FROM Employee e
 JOIN HasCaught ic ON ic.employeeID = e.ID
@@ -19,7 +19,7 @@ $statement->execute();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DisplayFacilityTable</title>
-    <link rel="stylesheet" href="displayEmployees.css">
+    <link rel="stylesheet" href="../../css/displayTable.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
@@ -28,8 +28,8 @@ $statement->execute();
 
     <div id="page-container">
         <div id="page-wrap">
-            <?php include 'navBar.php'; ?>
-            <?php include 'searchBar.php'; ?>
+            <?php include '../navBar.php'; ?>
+            <?php include '../searchBar.php'; ?>
 
             <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Doctors in Quebec (Query 14) </h1>
             <div class="table-condensed">
@@ -55,7 +55,7 @@ $statement->execute();
                 </table>
                 <div>
                     <div id="footer">
-                        <?php include 'footer.php'; ?>
+                        <?php include '../footer.php'; ?>
                         <div>
                             <div>
                                 <div>
