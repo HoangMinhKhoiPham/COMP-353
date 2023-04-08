@@ -1,14 +1,14 @@
-<?php require_once '../database.php';
+<?php require_once '../../database.php';
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     $facilityName = $_POST['facilityName'];
-    $statement = $conn->prepare('SELECT * FROM comp353proj.logTable WHERE sender = :facilityName');
+    $statement = $conn->prepare('SELECT * FROM '.DBNAME.'.logTable WHERE sender = :facilityName');
     $statement->bindParam(":facilityName", $facilityName);
     $statement->execute(); //executes the query above
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 else{
-    $statement = $conn->prepare('SELECT * FROM comp353proj.logTable');
+    $statement = $conn->prepare('SELECT * FROM '.DBNAME.'.logTable');
     $statement->execute(); //executes the query above
 }
 
@@ -23,7 +23,7 @@ else{
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DisplayFacilityTable</title>
-    <link rel ="stylesheet" href="displayEmployees.css">
+    <link rel ="stylesheet" href="../../css/displayTable.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
@@ -31,7 +31,7 @@ else{
 
   <div id = "page-container">
           <div id = "page-wrap">
-              <?php include 'navBar.php';?>
+              <?php include '../navBar.php';?>
               <div id = "trueSearchBar"> 
                     <nav class="navbar navbar-light bg-light" style = "margin-left:auto; margin-right:auto;">
                      <form class="form-inline" method = "get">
@@ -70,7 +70,7 @@ else{
               </table>
               <div>
                 <div id = "footer">
-              <?php include 'footer.php';?>
+              <?php include '../footer.php';?>
               <div>
           <div>
       <div>

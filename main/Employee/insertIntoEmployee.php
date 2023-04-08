@@ -1,12 +1,12 @@
 <?php
-require_once '../database.php';
+require_once '../../database.php';
 
-$maxIDFetch = $conn->prepare('SELECT max(Employee.ID) FROM comp353proj.Employee');
+$maxIDFetch = $conn->prepare('SELECT max(Employee.ID) FROM '.DBNAME.'.Employee');
 $maxIDFetch->execute();
 $maxEmployeeID = $maxIDFetch->fetchColumn();
 $id = $maxEmployeeID + 1;
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     $dateOfBirth = $_POST['dateOfBirth'];
@@ -22,7 +22,7 @@ if(isset($_POST['submit'])){
     $postalCode = $_POST['postalCode'];
 
     // prepare the statement
-    $sql = "INSERT INTO comp353proj.Employee (ID, firstName, lastName, dateOfBirth,medicareCardNumber, employeeRole, telephoneNumber, citizenship, email, country, province, city, address, postalCode) VALUES (:id, :firstName, :lastName, :dateOfBirth, :medicareCardNumber, :employeeRole, :telephoneNumber, :citizenship, :email, :country, :province, :city, :address, :postalCode)";
+    $sql = "INSERT INTO ".DBNAME.".Employee (ID, firstName, lastName, dateOfBirth,medicareCardNumber, employeeRole, telephoneNumber, citizenship, email, country, province, city, address, postalCode) VALUES (:id, :firstName, :lastName, :dateOfBirth, :medicareCardNumber, :employeeRole, :telephoneNumber, :citizenship, :email, :country, :province, :city, :address, :postalCode)";
     $stmt = $conn->prepare($sql);
 
     // bind the parameters
@@ -42,7 +42,7 @@ if(isset($_POST['submit'])){
     $stmt->bindParam(':postalCode', $postalCode);
 
     // execute the statement
-    if($stmt->execute()){
+    if($stmt->execute()) {
         // echo "Entries added";
         $success = true;
     } else {
@@ -63,7 +63,7 @@ if(isset($_POST['submit'])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DisplayEmployeesTable</title>
-    <link rel ="stylesheet" href="displayEmployees.css">
+    <link rel ="stylesheet" href="../../css/displayTable.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
@@ -71,8 +71,8 @@ if(isset($_POST['submit'])){
 
   <div id = "page-container">
           <div id = "page-wrap" style="width:100%">
-              <?php include 'navBar.php';?>
-              <?php include 'searchBar.php';?>
+              <?php include '../navBar.php';?>
+              <?php include '../searchBar.php';?>
               
               <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> Insert an employee record </h1>
               <div id = "insertEmployeeForm" style="margin-top:10px">
@@ -149,10 +149,9 @@ if(isset($_POST['submit'])){
                 </div>
                 <button type="submit" value="Submit" name = "submit" class="btn btn-primary">Submit</button>
                 <?php
-                    if ($success == true) {
+                    if (isset($success) && $success) {
                         echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Entry Added</h3>';
-                    }
-                    else {
+                    } else {
                         echo "";
                     }
                 ?>
@@ -160,7 +159,7 @@ if(isset($_POST['submit'])){
                 <div>
             <div>
           <div id = "footer">
-              <?php include 'footer.php';?>
+              <?php include '../footer.php';?>
           <div>
       <div>
 </body>
