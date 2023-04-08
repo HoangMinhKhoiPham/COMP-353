@@ -1,7 +1,7 @@
 <?php
-require_once '../database.php';
+require_once '../../database.php';
 
-$statement = $conn->prepare('SELECT * FROM comp353proj.Employee WHERE Employee.ID = :EmployeeID;');
+$statement = $conn->prepare('SELECT * FROM '.DBNAME.'.Employee WHERE Employee.ID = :EmployeeID;');
 $statement->bindParam(":EmployeeID", $_GET["ID"]);
 $statement->execute(); //executes the query above
 $id = $_GET["ID"];
@@ -22,7 +22,7 @@ if(isset($_POST['submit'])){
     $postalCode = $_POST['postalCode'];
 
     // bind the parameters
-    $sql = "UPDATE comp353proj.Employee 
+    $sql = "UPDATE ".DBNAME.".Employee 
         SET 
         firstName = :firstName,
         lastName = :lastName,
@@ -74,7 +74,7 @@ if(isset($_POST['submit'])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DisplayEmployeesTable</title>
-    <link rel ="stylesheet" href="displayEmployees.css">
+    <link rel ="stylesheet" href="../../css/displayTable.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
@@ -82,8 +82,8 @@ if(isset($_POST['submit'])){
 
   <div id = "page-container">
           <div id = "page-wrap" style="width:100%">
-              <?php include 'navBar.php';?>
-              <?php include 'searchBar.php';?>
+              <?php include '../navBar.php';?>
+              <?php include '../searchBar.php';?>
               
               <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> Update an employee record </h1>
               <div id = "insertEmployeeForm" style="margin-top:10px">
@@ -171,7 +171,7 @@ if(isset($_POST['submit'])){
                 <div>
             <div>
           <div id = "footer">
-              <?php include 'footer.php';?>
+              <?php include '../footer.php';?>
           <div>
       <div>
 </body>

@@ -1,5 +1,8 @@
 # COMP-353
-Group project for comp-353
+Group project for comp-353 #VBC353_4
+</br>
+Conceptual DB Design (E/R Diagram)
+![Screen Shot 2023-04-08 at 12 42 46](https://user-images.githubusercontent.com/97756628/230732944-9c97c4be-c203-43c0-b64a-ab92fe837a91.png)
 <h2>Project Description</h2> 
 <ul>
   <li>In this project, we will develop a Health Facility Employee Status Tracking System website where core features will be implemented. This system builds on and extends the application developed in the warm-up project. It adds some new functionalities and requires a Graphical User Interface to facilitate user interaction with the system.</li>
@@ -56,4 +59,4 @@ Google Drive Folder : https://drive.google.com/drive/u/1/folders/11eXVVyZKY9gljo
 <br/>
 Website Link: https://vbc353.encs.concordia.ca/
 <br/>
-![Screen Shot 2023-04-08 at 12 38 35](https://user-images.githubusercontent.com/97756628/230732731-126918dd-f310-4652-b000-b18f1ef00b77.png)
+
