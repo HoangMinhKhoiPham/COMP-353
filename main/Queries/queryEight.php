@@ -21,6 +21,11 @@ if (isset($conn)) {
 
     $statement->execute(); //executes the query above
 
+    $employeeInfo = $conn->prepare('select firstName, lastName, employeeRole from Employee where ID = :givenEmployee');
+    $employeeInfo->bindParam(':givenEmployee', $setEmployee);
+    $employeeInfo->execute();
+
+
 } else {
     print_r("DB Connection error");
 }
@@ -72,45 +77,69 @@ function setEndDate()
                 <p style='text-align:center; font-family:Museosans,serif; margin-top:10px'>Details of all hours of given employee within the specified time frame</p>
                 <p style='text-align:center; font-family:Museosans,serif; margin-top:10px'>For the purpose of the demo, use employee ID 6, 106, 162 or 251 </p>
 
-                <div id = "queryEditForm" style="margin-top:10px">
-                    <form style="width:100%; padding:30px" method="POST" >
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="employeeID">Employee ID</label>
-                                <label for="employeeID"></label><input type="number" min="0" class="form-control" id="employeeID" name = "employeeID"
-                                                                       placeholder="employeeID"
-                                                                       value="<?php echo setEmployee() ?>"
-                                                                       required>
-                            </div>
-
-                            <div class="form-group col-md-3">
-                                <label for="start_date">Start Of Time Period</label>
-                                <input type="date" class="form-control" id="start_date"
-                                       name = "start_date"
-                                       placeholder="YYYY-MM-DD"
-                                       value="<?php echo setStartDate()?>"
-                                       required>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="end_date">End Of Time Period</label>
-                                <input type="date" class="form-control" id="end_date"
-                                       name = "end_date"
-                                       placeholder="YYYY-MM-DD"
-                                       value="<?php echo setEndDate()?>"
-                                       required>
-                            </div>
-                            <button type="submit" value="Submit" name = "submit" class="btn btn-ternary">Submit</button>
+                <div class="row">
+                    <div class="col-md-4">
+                        <table class="table" style= "padding:20px;">
+                            <caption style="caption-side: top; text-align: center">Selected Employee Info</caption>
+                            <thead>
+                            <tr class="hoverUpon">
+                                <th scope="col" style="font-size:15px">First Name</th>
+                                <th scope="col" style="font-size:15px">Last Name</th>
+                                <th scope="col" style="font-size:15px">Role</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             <?php
-                            if (isset($success) && $success) {
-                                echo "<script> location.href='".BASE_URL."Queries/queryEight.php'; </script>";
-                                exit();
-                            } else {
-                                echo "";
-                            }
-                            ?>
+                            while ($row = $employeeInfo->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
+                                <tr class="hoverUpon">
+                                    <td scope = "row" style="font-size:15px"><?= $row["firstName"]  ?></td>
+                                    <td scope = "row" style="font-size:15px"><?= $row["lastName"] ?></td>
+                                    <td scope = "row" style="font-size:15px"><?= $row["employeeRole"] ?></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-8" id = "queryEditForm" style="margin-top:10px">
+                        <form style="width:100%; padding:30px" method="POST" >
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="employeeID">Employee ID</label>
+                                    <label for="employeeID"></label><input type="number" min="0" class="form-control" id="employeeID" name = "employeeID"
+                                                                           placeholder="employeeID"
+                                                                           value="<?php echo setEmployee() ?>"
+                                                                           required>
+                                </div>
 
-                        </div>
-                    </form>
+                                <div class="form-group col-md-3">
+                                    <label for="start_date">Start Of Time Period</label>
+                                    <input type="date" class="form-control" id="start_date"
+                                           name = "start_date"
+                                           placeholder="YYYY-MM-DD"
+                                           value="<?php echo setStartDate()?>"
+                                           required>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="end_date">End Of Time Period</label>
+                                    <input type="date" class="form-control" id="end_date"
+                                           name = "end_date"
+                                           placeholder="YYYY-MM-DD"
+                                           value="<?php echo setEndDate()?>"
+                                           required>
+                                </div>
+                                <button type="submit" value="Submit" name = "submit" class="btn btn-ternary">Submit</button>
+                                <?php
+                                if (isset($success) && $success) {
+                                    echo "<script> location.href='".BASE_URL."Queries/queryEight.php'; </script>";
+                                    exit();
+                                } else {
+                                    echo "";
+                                }
+                                ?>
+
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="table-condensed">
                     <table class="table" style= "padding:20px;">
