@@ -94,9 +94,6 @@
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li>
         </ul>
         <p class="form-inline my-2 my-lg-0">
             <img src="../img/download.png" alt="AppLogo" width="100" height="60" border-radius="20px">
