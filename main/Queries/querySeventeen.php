@@ -32,15 +32,18 @@ $statement->execute();
             <?php include '../navBar.php'; ?>
             <?php include '../searchBar.php'; ?>
 
-            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Doctors in Quebec (Query 14) </h1>
+            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of nurse(s) or doctor(s) who are currently working and has never been infected by COVID-19  (Query 17) </h1>
             <div class="table-condensed">
                 <table class="table" style="padding:20px;margin:20px; width:95%">
                     <thead>
                         <tr class="hoverUpon">
                             <th scope="col" style="font-size: 15px" class="px-5">firstName</th>
                             <th scope="col" style="font-size: 15px" class="px-5">lastName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">city</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">numberOfFacilitiesWorkedAt</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">email</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">firstDayOfWork</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">employeeRole</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">dateOfBirth</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">totalScheduledHours</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,8 +51,11 @@ $statement->execute();
                             <tr class="hoverUpon">
                                 <td scope="row" style="font-size: 15px" class="px-5"><?= $row["firstName"] ?></td>
                                 <td scope="row" style="font-size: 15px" class="px-5"><?= $row["lastName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["city"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["numberOfFacilitiesWorkedAt"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["email"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["firstDayOfWork"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["employeeRole"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["dateOfBirth"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["totalScheduledHours"] ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>

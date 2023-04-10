@@ -31,24 +31,24 @@ $statement->execute();
             <?php include '../navBar.php'; ?>
             <?php include '../searchBar.php'; ?>
 
-            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Doctors in Quebec (Query 14) </h1>
+            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of nurse(s) or doctor(s) who are currently working and has never been infected by COVID-19 (Query 13) </h1>
             <div class="table-condensed">
                 <table class="table" style="padding:20px;margin:20px; width:95%">
                     <thead>
                         <tr class="hoverUpon">
-                            <th scope="col" style="font-size: 15px" class="px-5">firstName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">lastName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">city</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">numberOfFacilitiesWorkedAt</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">facilityName</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">capacity</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">infectedCount</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">province</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                             <tr class="hoverUpon">
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["firstName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["lastName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["city"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["numberOfFacilitiesWorkedAt"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["facilityName"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["capacity"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["infectedCount"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row['province'] ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
