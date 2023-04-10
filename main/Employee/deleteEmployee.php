@@ -1,8 +1,8 @@
-<?php require_once '../database.php';
+<?php require_once '../../database.php';
 $statement = $conn->prepare('DELETE FROM '.DBNAME.'.Employee where Employee.ID = :EmployeeID');
 $statement->bindParam(":EmployeeID", $_GET["ID"]);
 $statement->execute(); //executes the query above
-header("Location: ./displayEmployees.php")
+header("Location: displayEmployees.php")
 ?>
 
 <!DOCTYPE html>

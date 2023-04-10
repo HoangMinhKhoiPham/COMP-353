@@ -34,6 +34,7 @@ $statement->execute(); //executes the query above
                             <th scope="col" style="font-size:10px">facilityID</th>
                             <th scope="col" style="font-size:10px">shiftStart</th>
                             <th scope="col" style="font-size:10px">shiftEnd</th>
+                            <th scope="col" style="font-size:10px">options</th>
                         </tr>
                     </thead>
                     <tbody>

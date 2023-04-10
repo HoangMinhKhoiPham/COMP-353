@@ -1,4 +1,4 @@
-<?php require_once '../database.php';
+<?php require_once '../../database.php';
 $statement = $conn->prepare('DELETE FROM ' . DBNAME . '.Facilities where Facilities.id = :id');
 $statement->bindParam(":id", $_GET["ID"]);
 $statement->execute(); //executes the query above

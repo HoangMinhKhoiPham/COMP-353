@@ -40,12 +40,13 @@ $statement->execute(); //executes the query above
                             <th scope="col" style="font-size:10px">city</th>
                             <th scope="col" style="font-size:10px">address</th>
                             <th scope="col" style="font-size:10px">webAddress</th>
+                            <th scope="col" style="font-size:10px">options</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                             <tr class="hoverUpon">
-                                <td scope="row" style="font-size:10px"><?= $row["ID"] ?></td>
+                                <td scope="row" style="font-size:10px"><?= $row["id"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["facilityType"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["capacity"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["phoneNumber"] ?></td>
@@ -55,10 +56,9 @@ $statement->execute(); //executes the query above
                                 <td scope="row" style="font-size:10px"><?= $row["city"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["address"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["webAddress"] ?></td>
-                                <td scope="row" style="font-size:10px"><?= $row["options"] ?></td>
                                 <td>
-                                    <a style="font-size:10px" href="deleteFacilities.php?ID=<?= $row["ID"] ?>"> Delete </a>
-                                    <a style="font-size:10px" href="editFacilities.php?ID=<?= $row["ID"] ?>"> Edit </a>
+                                    <a style="font-size:10px" href="deleteFacilities.php?ID=<?= $row["id"] ?>"> Delete </a>
+                                    <a style="font-size:10px" href="editFacilities.php?ID=<?= $row["id"] ?>"> Edit </a>
                                 </td>
                             </tr>
                         <?php } ?>

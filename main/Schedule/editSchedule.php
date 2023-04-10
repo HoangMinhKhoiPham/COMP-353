@@ -19,8 +19,9 @@ if (isset($_POST['submit'])) {
     // bind the parameters
     $sql = "UPDATE " . DBNAME . ".Schedule 
         SET 
-        shiftEnd = :shiftEnd,
-        WHERE employeeID = :employeeID AND
+        shiftEnd = :shiftEnd
+        WHERE 
+        employeeID = :employeeID AND
         facilityID = :facilityID AND
         shiftStart = :shiftStart";
 

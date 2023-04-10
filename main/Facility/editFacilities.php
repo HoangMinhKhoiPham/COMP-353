@@ -82,43 +82,43 @@ if (isset($_POST['submit'])) {
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="facilityType">Facility Type</label>
-                            <input type="text" class="form-control" id="facilityType" name="facilityType" placeholder="facilityType" required>
+                            <input type="text" class="form-control" id="facilityType" name="facilityType" placeholder="facilityType">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="capacity">Capacity</label>
-                            <input type="text" class="form-control" id="capacity" name="capacity" placeholder="capacity" required>
+                            <input type="text" class="form-control" id="capacity" name="capacity" placeholder="capacity">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-row col-md-6">
                             <label for="phoneNumber">PhoneNumber</label>
-                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="xxx-xxx-xxxx" required>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="xxx-xxx-xxxx">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="facilityName">Facility Name</label>
-                            <input type="text" class="form-control" id="facilityName" name="facilityName" placeholder="facilityName" required>
+                            <input type="text" class="form-control" id="facilityName" name="facilityName" placeholder="facilityName">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="managerID">managerID</label>
-                            <input type="text" class="form-control" id="managerID" name="managerID" placeholder="managerID" required>
+                            <input type="text" class="form-control" id="managerID" name="managerID" placeholder="managerID">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="province">Province</label>
-                            <input type="text" class="form-control" id="province" name="province" placeholder="province" required>
+                            <input type="text" class="form-control" id="province" name="province" placeholder="province">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="city">City</label>
-                            <input type="text" class="form-control" id="city" name="city" placeholder="city" required>
+                            <input type="text" class="form-control" id="city" name="city" placeholder="city">
                         </div>
                         <div class="form-group col-md-2">
                             <label for="address">Address</label>
-                            <input type="text" class="form-control" id="address" name="address" value="address" required>
+                            <input type="text" class="form-control" id="address" name="address" value="address">
                         </div>
                         <div class="form-group col-md-2">
                             <label for="webAddress">webAddress</label>
-                            <input type="text" class="form-control" id="webAddress" name="webAddress" value="webAddress" required>
+                            <input type="text" class="form-control" id="webAddress" name="webAddress" value="webAddress">
                         </div>
                     </div>
                     <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>
