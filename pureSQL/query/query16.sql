@@ -12,7 +12,7 @@ select * from (
         (select ID, firstName, lastName, min(startDate) as firstDay, employeeRole, dateOfBirth, email from
             (select * from
                 (select * from
-                    (select employeeID, count(*) as timesInfected from HasCaught group by employeeID) as HC
+                    (select employeeID, count(*) as timesInfected from HasCaught group by employeeID) as HC -- (select employeeID, count(*) as timesInfected from HasCaught  where infectionID = 1 group by employeeID) as HC
                     where timesInfected >= 3) as infectedOver3
                 join Employee E on employeeID = E.ID) as EmpMatched
         join WorksAt on EmpMatched.employeeID = EmpMatched.ID group by EmpMatched.employeeID) as EmployeeAndHours
@@ -21,3 +21,4 @@ where employeeRole in ('Doctor', 'Nurse')
 order by employeeRole, firstName, lastName;
 
 -- No params
+-- our COVID-19 type is infectionID = 1.
