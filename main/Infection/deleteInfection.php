@@ -1,10 +1,12 @@
-<?php require_once '../database.php';
+<?php require_once '../../database.php';
 if (isset($conn)) {
-    $statement = $conn->prepare('DELETE FROM ' . DBNAME . '.Infection where Infection.infectionID = :infectionID');
-    $statement->bindParam(":infectionID", $_GET["infectionID"]);
+    $statement = $conn->prepare('DELETE FROM ' . DBNAME . '.HasCaught where HasCaught.infectionCaseID = :infectionCaseID');
+    $statement->bindParam(":infectionCaseID", $_GET["ID"]);
+    error_log(print_r($_GET, true));
     $statement->execute(); //executes the query above
+
 }
-header("Location: ./Infection/displayInfection.php")
+header("Location: ../../main/Infection/displayInfection.php")
 ?>
 
 <!DOCTYPE html>
