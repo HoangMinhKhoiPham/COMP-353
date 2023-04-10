@@ -59,7 +59,7 @@ function setEndDate()
 
 <div id = "page-container">
     <div id = "page-wrap">
-        <?php include '../navBar.php';?>
+        <?php include_once '../navBar.php';?>
         <div id = "trueSearchBar">
             <nav class="navbar navbar-light bg-light" style = "margin-left:auto; margin-right:auto;">
                 <form class="form-inline" method = "get">
@@ -102,7 +102,6 @@ function setEndDate()
                             <button type="submit" value="Submit" name = "submit" class="btn btn-ternary">Submit</button>
                             <?php
                             if (isset($success) && $success) {
-                                echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Entry Updated</h3>';
                                 echo "<script> location.href='".BASE_URL."Queries/queryEight.php'; </script>";
                                 exit();
                             } else {
@@ -135,7 +134,7 @@ function setEndDate()
                             </table>
                         </div>
                         <div id = "footer">
-                            <?php include '../footer.php';?>
+                            <?php include_once '../footer.php';?>
                         </div>
                 </div>
             </div>

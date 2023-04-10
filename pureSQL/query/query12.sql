@@ -3,7 +3,7 @@
 
 use vbc353_4;
 
-select sum(hoursWorked), employeeRole from
+select sum(hoursWorked) as totalHours, employeeRole from
     (select facilityID, facilityName, hour(sum(timediff(shiftEnd, shiftStart))) as hoursWorked, employeeID
     from Facilities join Schedule S on Facilities.id = S.facilityID
     group by employeeID, facilityName) as scheduledHour
