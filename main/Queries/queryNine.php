@@ -31,15 +31,15 @@ $statement->execute();
             <?php include '../navBar.php'; ?>
             <?php include '../searchBar.php'; ?>
 
-            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Doctors in Quebec (Query 14) </h1>
+            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Doctors in Quebec (Query 9) </h1>
             <div class="table-condensed">
                 <table class="table" style="padding:20px;margin:20px; width:95%">
                     <thead>
                         <tr class="hoverUpon">
                             <th scope="col" style="font-size: 15px" class="px-5">firstName</th>
                             <th scope="col" style="font-size: 15px" class="px-5">lastName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">city</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">numberOfFacilitiesWorkedAt</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">dateOfInfection</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">facilityName</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,8 +47,8 @@ $statement->execute();
                             <tr class="hoverUpon">
                                 <td scope="row" style="font-size: 15px" class="px-5"><?= $row["firstName"] ?></td>
                                 <td scope="row" style="font-size: 15px" class="px-5"><?= $row["lastName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["city"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["numberOfFacilitiesWorkedAt"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["dateOfInfection"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["facilityName"] ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
