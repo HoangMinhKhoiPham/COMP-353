@@ -1,5 +1,5 @@
 <?php require_once '../../database.php';
-$statement = $conn->prepare('SELECT * FROM ' . DBNAME . '.Facilities');
+$statement = $conn->prepare('SELECT * FROM facilities');
 $statement->execute(); //executes the query above
 ?>
 
@@ -45,7 +45,7 @@ $statement->execute(); //executes the query above
                     <tbody>
                         <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                             <tr class="hoverUpon">
-                                <td scope="row" style="font-size:10px"><?= $row["ID"] ?></td>
+                                <td scope="row" style="font-size:10px"><?= $row["id"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["facilityType"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["capacity"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["phoneNumber"] ?></td>
@@ -57,8 +57,8 @@ $statement->execute(); //executes the query above
                                 <td scope="row" style="font-size:10px"><?= $row["webAddress"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["options"] ?></td>
                                 <td>
-                                    <a style="font-size:10px" href="deleteFacilities.php?ID=<?= $row["ID"] ?>"> Delete </a>
-                                    <a style="font-size:10px" href="editFacilities.php?ID=<?= $row["ID"] ?>"> Edit </a>
+                                    <a style="font-size:10px" href="deleteFacilities.php?ID=<?= $row["id"] ?>"> Delete </a>
+                                    <a style="font-size:10px" href="editFacilities.php?ID=<?= $row["id"] ?>"> Edit </a>
                                 </td>
                             </tr>
                         <?php } ?>
