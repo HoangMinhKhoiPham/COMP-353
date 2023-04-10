@@ -11,3 +11,6 @@ select facilityName, sum(hoursScheduled), employeeRole from
 where facilityID = 8
 group by employeeRole order by employeeRole;
 
+-- note the specified time period is handled in hoursInTimeFrame
+-- and the facility selection is handled in the final table
+
