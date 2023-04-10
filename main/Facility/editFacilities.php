@@ -1,10 +1,11 @@
 <?php
 require_once '../../database.php';
 
-$statement = $conn->prepare('SELECT * FROM ' . DBNAME . '.Facilities WHERE Facilities.id = :id;');
+$statement = $conn->prepare('SELECT * FROM Facilities WHERE Facilities.id = :id;');
 $statement->bindParam(":id", $_GET["ID"]);
 $statement->execute(); //executes the query above
-$id = $_GET["ID"];
+$id = (int) $_GET["ID"];
+$success = false;
 
 if (isset($_POST['submit'])) {
     $facilityType = $_POST['facilityType'];
@@ -18,37 +19,47 @@ if (isset($_POST['submit'])) {
     $webAddress = $_POST['webAddress'];
 
     // bind the parameters
-    $sql = "UPDATE " . DBNAME . ".Facilities 
-        SET 
-        facilityType = :facilityType,
-        capacity = :capacity,
-        phoneNumber = :phoneNumber,
-        facilityName = :facilityName,
-        managerID = :managerID,
-        province = :province,
-        city = :city,
-        address = :address,
-        webAddress = :webAddress,
-        WHERE id = :id;";
-
+    // $sql = "UPDATE " . DBNAME . ".Facilities 
+    //     SET 
+    //     facilityType = :facilityType,
+    //     capacity = :capacity,
+    //     phoneNumber = :phoneNumber,
+    //     facilityName = :facilityName,
+    //     managerID = :managerID,
+    //     province = :province,
+    //     city = :city,
+    //     address = :address,
+    //     webAddress = :webAddress,
+    //     WHERE id = ".$id.";";
+    $sql = "UPDATE Facilities SET  capacity = " . $_POST['capacity'] . " WHERE id = " . $_GET["ID"] . "";
+    echo $_POST['facilityType'];
+    // if (isset($_POST['facilityType'])) {
+    //     $sql = $sql." facilityType=" .$_POST['facilityType'];
+    // }
+    // if (isset($_POST['capacity'])) {
+    //     $sql = $sql." capacity=" .$_POST['capacity'];
+    // }
+    // $sql .= "WHERE id = ".$_GET["ID"]."";
+    var_dump($sql);
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(":facilityType", $facilityType);
-    $stmt->bindParam(":capacity", $capacity);
-    $stmt->bindParam(":phoneNumber", $phoneNumber);
-    $stmt->bindParam(":facilityName", $facilityName);
-    $stmt->bindParam(":managerID", $managerID);
-    $stmt->bindParam(":province", $province);
-    $stmt->bindParam(":city", $city);
-    $stmt->bindParam(":address", $address);
-    $stmt->bindParam(":webAddress", $webAddress);
-    $stmt->bindParam(":id", $id);
+    // $stmt->bindParam(":facilityType", $facilityType);
+    // $stmt->bindParam(":capacity", $capacity);
+    // $stmt->bindParam(":phoneNumber", $phoneNumber);
+    // $stmt->bindParam(":facilityName", $facilityName);
+    // $stmt->bindParam(":managerID", $managerID);
+    // $stmt->bindParam(":province", $province);
+    // $stmt->bindParam(":city", $city);
+    // $stmt->bindParam(":address", $address);
+    // $stmt->bindParam(":webAddress", $webAddress);
+    //$stmt->bindParam(":id", $id);
+
 
     // execute the statement
     if ($stmt->execute() == TRUE) {
         // echo "Entries added";
         $success = true;
     } else {
-        // echo "Error: " . $sql . "<br>" . $conn->error;
+        var_dump($stmt->errorInfo());
         $success = false;
     }
 }

@@ -1,17 +1,19 @@
-<?php require_once '../../database.php';
-$statement = $conn->prepare("SELECT 
+<?php 
+require_once '../../database.php';
+if (isset($_GET['submit'])) {
+    $facility = $_GET['facility'];
+    $statement = $conn->prepare("SELECT 
 firstName,lastName,dateOfBirth,medicareCardNumber,
 telephoneNumber,address,city,province,postalCode,
 citizenship,email
 FROM Employee NATURAL JOIN
 (SELECT employeeID AS ID, startDate FROM WorksAt
 WHERE facilityID = (SELECT ID FROM  Facilities WHERE
-            facilityName = 'Hospital Maisonneuve Rosemont')
-        AND endDate IS NULL) AS employeeIDList;"); // to change to school database name
-$statement->execute();
+            facilityName = '".$facility."')
+        AND endDate IS NULL) AS employeeIDList;");
+    $statement->execute();
+}
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,8 +33,11 @@ $statement->execute();
     <div id="page-container">
         <div id="page-wrap">
             <?php include '../navBar.php'; ?>
-            <?php include '../searchBar.php'; ?>
-
+            <form class="form-inline" method="GET">
+                <label  class="my-1 mr-2" for="facility">Which facility would you like to see a list of all the employees currently working there?</label>
+                <input  style="width: 50%" type="text" class="form-control" name="facility" placeholder="Hospital Maisonneuve Rosemont">
+                <button style="margin: 10px" type="submit" class="btn btn-primary my-1">Submit</button>
+            </form>
             <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Doctors in Quebec (Query 14) </h1>
             <div class="table-condensed">
                 <table class="table" style="padding:20px;margin:20px; width:95%">
