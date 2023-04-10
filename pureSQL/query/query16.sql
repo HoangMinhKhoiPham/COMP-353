@@ -8,7 +8,7 @@
 use vbc353_4;
 
 select * from (
-    select firstName, lastName, firstDay, employeeRole, dateOfBirth, email, hour(sum(timediff(shiftEnd, shiftStart))) as hoursWorked from
+    select firstName, lastName, firstDay, employeeRole, dateOfBirth, email, hour(sum(timediff(shiftEnd, shiftStart))) as hoursScheduled from
         (select ID, firstName, lastName, min(startDate) as firstDay, employeeRole, dateOfBirth, email from
             (select * from
                 (select * from

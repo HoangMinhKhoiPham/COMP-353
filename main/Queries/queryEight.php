@@ -84,7 +84,7 @@ function setEndDate()
                             </div>
 
                             <div class="form-group col-md-3">
-                                <label for="dateOfInfection">Start Of Time Period</label>
+                                <label for="start_date">Start Of Time Period</label>
                                 <input type="date" class="form-control" id="start_date"
                                        name = "start_date"
                                        placeholder="YYYY-MM-DD"
@@ -92,7 +92,7 @@ function setEndDate()
                                        required>
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="dateOfInfection">End Of Time Period</label>
+                                <label for="end_date">End Of Time Period</label>
                                 <input type="date" class="form-control" id="end_date"
                                        name = "end_date"
                                        placeholder="YYYY-MM-DD"
@@ -110,34 +110,35 @@ function setEndDate()
                             ?>
 
                         </div>
-                        <div class="table-condensed">
-                            <table class="table" style= "padding:20px;">
-                                <thead>
-                                <tr class="hoverUpon">
-                                    <th scope="col" style="font-size:15px">Facility Name</th>
-                                    <th scope="col" style="font-size:15px">Day</th>
-                                    <th scope="col" style="font-size:15px">Shift Start Time</th>
-                                    <th scope="col" style="font-size:15px">Shift End Time</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
-                                    <tr class="hoverUpon">
-                                        <td scope = "row" style="font-size:15px"><?= $row["facilityName"] ?></td>
-                                        <td scope = "row" style="font-size:15px"><?= $row["Day"] ?></td>
-                                        <td scope = "row" style="font-size:15px"><?= $row["start_time"] ?></td>
-                                        <td scope = "row" style="font-size:15px"><?= $row["end_time"] ?></td>
-                                    </tr>
-                                <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id = "footer">
-                            <?php include_once '../footer.php';?>
-                        </div>
+                    </form>
                 </div>
-            </div>
+                <div class="table-condensed">
+                    <table class="table" style= "padding:20px;">
+                        <thead>
+                        <tr class="hoverUpon">
+                            <th scope="col" style="font-size:15px">Facility Name</th>
+                            <th scope="col" style="font-size:15px">Day</th>
+                            <th scope="col" style="font-size:15px">Shift Start Time</th>
+                            <th scope="col" style="font-size:15px">Shift End Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
+                            <tr class="hoverUpon">
+                                <td scope = "row" style="font-size:15px"><?= $row["facilityName"] ?></td>
+                                <td scope = "row" style="font-size:15px"><?= $row["Day"] ?></td>
+                                <td scope = "row" style="font-size:15px"><?= $row["start_time"] ?></td>
+                                <td scope = "row" style="font-size:15px"><?= $row["end_time"] ?></td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div id = "footer">
+                    <?php include_once '../footer.php';?>
+                </div>
+
 </body>
 </html>
 

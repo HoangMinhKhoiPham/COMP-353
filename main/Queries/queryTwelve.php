@@ -1,6 +1,4 @@
 <?php
-# For a given facility, give the total hours scheduled for every role during a
-# specific period. Results should be displayed in ascending order by role
 require_once '../../database.php';
 
 if (isset($conn)) {
@@ -9,17 +7,22 @@ if (isset($conn)) {
     $options = $optionFetch->fetchAll();
 
     $statement = $conn->prepare(
-        'select sum(hoursWorked) as totalHours, employeeRole from
-                    (select facilityID, facilityName, hour(sum(timediff(shiftEnd, shiftStart))) as hoursWorked, employeeID
-                    from Facilities join Schedule S on Facilities.id = S.facilityID
-                    group by employeeID, facilityName) as scheduledHour
-                    join Employee E on employeeID = E.ID
+        'select facilityName, sum(hoursScheduled) as totalHoursScheduled, employeeRole from
+                    (select facilityID, facilityName, day, hoursScheduled, employeeID from
+                        (select *, hour(sum(timediff(shiftEnd, shiftStart))) as hoursScheduled, date(shiftEnd) as day
+                        from Facilities join Schedule S on Facilities.id = S.facilityID group by employeeID, day, facilityName) as allHours
+                    where day >= date(:startDate) and day <= date(:endDate)) as hoursInTimeframe
+                join Employee E on employeeID = E.ID
                 where facilityID = :chosenFacility
-                group by employeeRole order by employeeRole'
+                group by employeeRole order by employeeRole;'
     );
 
     $setFacilityId = setFacilityId();
     $statement->bindParam(':chosenFacility', $setFacilityId);
+    $setStartDate = setStartDate();
+    $statement->bindParam(':startDate', $setStartDate);
+    $setEndDate = setEndDate();
+    $statement->bindParam(':endDate', $setEndDate);
 
 
     $statement->execute(); //executes the query above
@@ -31,6 +34,15 @@ if (isset($conn)) {
 function setFacilityId()
 {
     return $_POST['facilityID'] ?? 8;
+}
+function setStartDate()
+{
+    return $_POST['start_date'] ?? "2023-04-02";
+}
+
+function setEndDate()
+{
+    return $_POST['end_date'] ?? "2023-04-29";
 }
 
 
@@ -63,12 +75,12 @@ function setFacilityId()
             </nav>
             <div>
                 <h1 style='text-align:center; font-family:Museosans,serif; margin-top:10px'> Query 12 </h1>
-                <p style='text-align:center; font-family:Museosans,serif; margin-top:10px'>All hours scheduled for all roles for the selected facility</p>
+                <p style='text-align:center; font-family:Museosans,serif; margin-top:10px'>All hours scheduled for all roles for the selected facility for the specified time frame</p>
 
                 <div id = "queryEditForm" style="margin-top:10px">
                     <form style="width:100%; padding:30px" method="POST" >
                         <div class="form-row">
-                            <div class="form-group col-md-10">
+                            <div class="form-group col-md-4">
                                 <label for="facilityID">Facility Selected</label>
                                 <select class="form-select" aria-label="selectFacility" id="facilityID" name = "facilityID" required>
                                     <?php
@@ -85,6 +97,22 @@ function setFacilityId()
                                     ?>
                                 </select>
                             </div>
+                            <div class="form-group col-md-3">
+                                <label for="start_date">Start Of Time Period</label>
+                                <input type="date" class="form-control" id="start_date"
+                                       name = "start_date"
+                                       placeholder="YYYY-MM-DD"
+                                       value="<?php echo setStartDate()?>"
+                                       required>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="end_date">End Of Time Period</label>
+                                <input type="date" class="form-control" id="end_date"
+                                       name = "end_date"
+                                       placeholder="YYYY-MM-DD"
+                                       value="<?php echo setEndDate()?>"
+                                       required>
+                            </div>
                             <button type="submit" value="Submit" name = "submit" class="btn btn-ternary">Submit</button>
                             <?php
                             if (isset($success) && $success) {
@@ -96,30 +124,30 @@ function setFacilityId()
                             ?>
 
                         </div>
-                        <div class="table-condensed">
-                            <table class="table" style= "padding:20px;">
-                                <thead>
-                                <tr class="hoverUpon">
-                                    <th scope="col" style="font-size:15px">Role</th>
-                                    <th scope="col" style="font-size:15px">Total Hours Scheduled</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) {?>
-                                    <tr class="hoverUpon">
-                                        <td scope = "row" style="font-size:15px"><?= $row["employeeRole"] ?></td>
-                                        <td scope = "row" style="font-size:15px"><?= $row["totalHours"] ?></td>
-                                    </tr>
-                                <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id = "footer">
-                            <?php include_once '../footer.php';?>
-                        </div>
+                    </form>
                 </div>
-            </div>
+                <div class="table-condensed">
+                    <table class="table" style= "padding:20px;">
+                        <thead>
+                        <tr class="hoverUpon">
+                            <th scope="col" style="font-size:15px">Role</th>
+                            <th scope="col" style="font-size:15px">Total Hours Scheduled</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) {?>
+                            <tr class="hoverUpon">
+                                <td scope = "row" style="font-size:15px"><?= $row["employeeRole"] ?></td>
+                                <td scope = "row" style="font-size:15px"><?= $row["totalHoursScheduled"] ?></td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div id = "footer">
+                    <?php include_once '../footer.php';?>
+                </div>
 </body>
 </html>
 
