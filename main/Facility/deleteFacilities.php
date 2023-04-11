@@ -1,11 +1,8 @@
 <?php require_once '../../database.php';
-if (isset($conn)) {
-    $statement = $conn->prepare('DELETE FROM ' . DBNAME . '.Facilities where Facilities.id = :id');
-    $statement->bindParam(":id", $_GET["ID"]);
-    error_log(print_r($_GET, true));
-    $statement->execute(); //executes the query above
-}
-header("Location: ../../main/Facility/displayFacilities.php")
+$statement = $conn->prepare('DELETE FROM Facilities where Facilities.id = :id');
+$statement->bindParam(":id", $_GET["ID"]);
+$statement->execute(); //executes the query above
+header("Location: ./displayFacilities.php")
 ?>
 
 <!DOCTYPE html>

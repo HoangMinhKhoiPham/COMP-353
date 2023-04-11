@@ -32,13 +32,15 @@ if (isset($_POST['submit'])) {
     $stmt->bindParam(":webAddress", $webAddress);
 
     // execute the statement
-
+  
     if ($stmt->execute()) {
         // echo "Entries added";
         $success = true;
     } else {
         $success = false;
+
     }
+    
 }
 
 
@@ -105,11 +107,11 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="form-group col-md-2">
                             <label for="address">Address</label>
-                            <input type="text" class="form-control" id="address" name="address" value="address" required>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="address" required>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="webAddress">webAddress</label>
-                            <input type="text" class="form-control" id="webAddress" name="webAddress" value="webAddress" required>
+                            <input type="text" class="form-control" id="webAddress" name="webAddress" placeholder="webAddress" required>
                         </div>
                     </div>
                     <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>
