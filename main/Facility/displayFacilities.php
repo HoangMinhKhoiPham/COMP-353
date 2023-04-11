@@ -1,5 +1,5 @@
 <?php require_once '../../database.php';
-$statement = $conn->prepare('SELECT * FROM ' . DBNAME . '.Facilities');
+$statement = $conn->prepare('SELECT * FROM facilities');
 $statement->execute(); //executes the query above
 ?>
 
