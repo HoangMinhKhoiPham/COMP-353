@@ -29,16 +29,19 @@ if (isset($conn)) {
         $stmt->bindParam(':shiftEnd', $shiftEnd);
 
 
-        // execute the statement
-        if ($stmt->execute()) {
-            $success = true;
-        } else {
-            $success = false;
-        }
+    // execute the statement
+    if ($stmt->execute()) {
+        $success = true;
+    } else {
+        $success = false;
+        $error = $stmt->errorInfo();
+        echo "Error: " . $error[2];
+
     }
 } else {
     print_r("DBO CONN ERROR");
 }
+
 ?>
 
 
