@@ -1,13 +1,19 @@
-<?php 
-    require_once '../../database.php';
-    if (isset($_GET['facility'])) {
-        $facility = $_GET['facility'];
+<?php
+require_once '../../database.php';
+if (isset($_GET['facilityID'])) {
+    $facility = $_GET['facilityID'];
     $statement = $conn->prepare("SELECT firstName, lastName, employeeRole FROM Employee WHERE ID IN (SELECT employeeID FROM Schedule 
-WHERE facilityID IN (SELECT ID FROM facilities WHERE facilityName = '".$facility."') AND (CAST(shiftStart AS DATE) >= (CURDATE() - INTERVAL 14 DAY) AND (CAST(shiftStart AS DATE) <= CURDATE())))
+WHERE facilityID IN (SELECT ID FROM Facilities WHERE facilityName = '".$facility."') AND (CAST(shiftStart AS DATE) >= (CURDATE() - INTERVAL 14 DAY) AND (CAST(shiftStart AS DATE) <= CURDATE())))
 AND (employeeRole = 'Doctor' OR employeeRole = 'Nurse')
 ORDER BY employeeRole, firstName asc;"); // to change to school database name
     $statement->execute();
-    }
+
+    $optionFetch = $conn->prepare('SELECT id, facilityName FROM ' . DBNAME . '.Facilities where id=:facilityID');
+    $optionFetch->bindParam(':facilityID', $facility);
+    $optionFetch->execute();
+    $options = $optionFetch->fetchAll();
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,37 +31,37 @@ ORDER BY employeeRole, firstName asc;"); // to change to school database name
 
 <body>
 
-    <div id="page-container">
-        <div id="page-wrap">
-            <?php include '../navBar.php'; ?>
-            <?php include '../searchBar.php'; ?>
+<div id="page-container">
+    <div id="page-wrap">
+        <?php include '../navBar.php'; ?>
+        <?php include '../searchBar.php'; ?>
 
-            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Nurses And Doctors In <?php echo $_GET['facility'] ?> have been on schedule to work in the last two weeks  (Query 11)</h1>
-            <div class="table-condensed">
-                <table class="table" style="padding:20px;margin:20px; width:95%">
-                    <thead>
-                        <tr class="hoverUpon">
-                            <th scope="col" style="font-size: 15px" class="px-5">firstName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">lastName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">employeeRole</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
-                            <tr class="hoverUpon">
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["firstName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["lastName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["employeeRole"] ?></td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-                <div>
-                    <div id="footer">
-                        <?php include '../footer.php'; ?>
+        <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Nurses And Doctors In <?php echo $options[0]['facilityName']; ?> have been on schedule to work in the last two weeks  (Query 11)</h1>
+        <div class="table-condensed">
+            <table class="table" style="padding:20px;margin:20px; width:95%">
+                <thead>
+                <tr class="hoverUpon">
+                    <th scope="col" style="font-size: 15px" class="px-5">firstName</th>
+                    <th scope="col" style="font-size: 15px" class="px-5">lastName</th>
+                    <th scope="col" style="font-size: 15px" class="px-5">employeeRole</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
+                    <tr class="hoverUpon">
+                        <td scope="row" style="font-size: 15px" class="px-5"><?= $row["firstName"] ?></td>
+                        <td scope="row" style="font-size: 15px" class="px-5"><?= $row["lastName"] ?></td>
+                        <td scope="row" style="font-size: 15px" class="px-5"><?= $row["employeeRole"] ?></td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+            <div>
+                <div id="footer">
+                    <?php include '../footer.php'; ?>
+                    <div>
                         <div>
                             <div>
-                                <div>
 </body>
 
 </html>

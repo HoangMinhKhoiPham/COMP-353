@@ -11,14 +11,13 @@ if (isset($_POST['submit'])) {
     $capacity = $_POST['capacity'];
     $phoneNumber = $_POST['phoneNumber'];
     $facilityName = $_POST['facilityName'];
-    // $managerID = $_POST['managerID'];
     $province = $_POST['province'];
     $city = $_POST['city'];
     $address = $_POST['address'];
     $webAddress = $_POST['webAddress'];
 
     // prepare the statement
-    $sql = "INSERT INTO facilities (facilityType, capacity, phoneNumber,facilityName, province, city, address, webAddress) VALUES (:facilityType, :capacity, :phoneNumber, :facilityName, :province, :city, :address, :webAddress)";
+    $sql = "INSERT INTO Facilities (facilityType, capacity, phoneNumber,facilityName, province, city, address, webAddress) VALUES (:facilityType, :capacity, :phoneNumber, :facilityName, :province, :city, :address, :webAddress)";
     $stmt = $conn->prepare($sql);
 
     // bind the parameters
@@ -89,10 +88,12 @@ if (isset($_POST['submit'])) {
                             <label for="facilityName">Facility Name</label>
                             <input type="text" class="form-control" id="facilityName" name="facilityName" placeholder="facilityName" required>
                         </div>
-                        <!-- <div class="form-group col-md-6">
-                            <label for="managerID">managerID</label>
-                            <input type="text" class="form-control" id="managerID" name="managerID" placeholder="managerID" required>
-                        </div> -->
+                        <div class="form-group col-md-6" >
+                            <label for="managerID-NOEDIT">Manager ID</label>
+                            <select class="form-select" aria-label="selectEmployee" id="managerID-NOEDIT" name = "managerID-NOEDIT" disabled>
+                                <option selected value="">SET THIS IN EDIT MODE</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
