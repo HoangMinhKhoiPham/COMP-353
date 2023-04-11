@@ -40,7 +40,6 @@ $statement->execute(); //executes the query above
                             <th scope="col" style="font-size:10px">city</th>
                             <th scope="col" style="font-size:10px">address</th>
                             <th scope="col" style="font-size:10px">webAddress</th>
-                            <th scope="col" style="font-size:10px">options</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,6 +55,7 @@ $statement->execute(); //executes the query above
                                 <td scope="row" style="font-size:10px"><?= $row["city"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["address"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["webAddress"] ?></td>
+                                <!-- <td scope="row" style="font-size:10px"><?= $row["options"] ?></td> -->
                                 <td>
                                     <a style="font-size:10px" href="deleteFacilities.php?ID=<?= $row["id"] ?>"> Delete </a>
                                     <a style="font-size:10px" href="editFacilities.php?ID=<?= $row["id"] ?>"> Edit </a>

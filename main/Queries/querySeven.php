@@ -1,20 +1,3 @@
-<?php 
-require_once '../../database.php';
-if (isset($_GET['submit'])) {
-    $facility = $_GET['facility'];
-    $statement = $conn->prepare("SELECT 
-firstName,lastName,dateOfBirth,medicareCardNumber,
-telephoneNumber,address,city,province,postalCode,
-citizenship,email
-FROM Employee NATURAL JOIN
-(SELECT employeeID AS ID, startDate FROM WorksAt
-WHERE facilityID = (SELECT ID FROM  Facilities WHERE
-            facilityName = '".$facility."')
-        AND endDate IS NULL) AS employeeIDList;");
-    $statement->execute();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,39 +16,16 @@ WHERE facilityID = (SELECT ID FROM  Facilities WHERE
     <div id="page-container">
         <div id="page-wrap">
             <?php include '../navBar.php'; ?>
-            <form class="form-inline" method="GET">
+            <form class="form-inline" action="getEmployee.php" method="GET">
                 <label  class="my-1 mr-2" for="facility">Which facility would you like to see a list of all the employees currently working there?</label>
                 <input  style="width: 50%" type="text" class="form-control" name="facility" placeholder="Hospital Maisonneuve Rosemont">
                 <button style="margin: 10px" type="submit" class="btn btn-primary my-1">Submit</button>
             </form>
-            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Doctors in Quebec (Query 14) </h1>
-            <div class="table-condensed">
-                <table class="table" style="padding:20px;margin:20px; width:95%">
-                    <thead>
-                        <tr class="hoverUpon">
-                            <th scope="col" style="font-size: 15px" class="px-5">firstName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">lastName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">city</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">numberOfFacilitiesWorkedAt</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
-                            <tr class="hoverUpon">
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["firstName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["lastName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["city"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["numberOfFacilitiesWorkedAt"] ?></td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-                <div>
-                    <div id="footer">
-                        <?php include '../footer.php'; ?>
-                        <div>
-                            <div>
-                                <div>
+            <div id="footer">
+                <?php include '../footer.php'; ?>
+            <div>
+        <div>
+    <div>
 </body>
 
 </html>

@@ -1,67 +1,51 @@
 <?php
 require_once '../../database.php';
 
-$statement = $conn->prepare('SELECT * FROM '.DBNAME.'.Employee WHERE Employee.ID = :EmployeeID;');
-$statement->bindParam(":EmployeeID", $_GET["ID"]);
-$statement->execute(); //executes the query above
+// $statement = $conn->prepare('SELECT * FROM Employee WHERE Employee.ID = :EmployeeID;');
+// $statement->bindParam(":EmployeeID", $_GET["ID"]);
+// $statement->execute(); //executes the query above
 $id = $_GET["ID"];
+$success = false;
 
 if(isset($_POST['submit'])){
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $dateOfBirth = $_POST['dateOfBirth'];
-    $medicareCardNumber = $_POST['medicareCardNumber'];
-    $employeeRole = $_POST['employeeRole'];
-    $telephoneNumber = $_POST['telephoneNumber'];
-    $citizenship = $_POST['citizenship'];
-    $email = $_POST['email'];
-    $country = "Canada";
-    $province = $_POST['province'];
-    $city = $_POST['city'];
-    $address = $_POST['address'];
-    $postalCode = $_POST['postalCode'];
+    $values = array(
+        "firstName" => $_POST['firstName'],
+        "lastName" => $_POST['lastName'],
+        "dateOfBirth" => $_POST['dateOfBirth'],
+        "medicareCardNumber" => $_POST['medicareCardNumber'],
+        "employeeRole" => $_POST['employeeRole'],
+        "telephoneNumber" => $_POST['telephoneNumber'],
+        "citizenship" => $_POST['citizenship'],
+        "email" => $_POST['email'],
+        "province" => $_POST['province'],
+        "city" => $_POST['city'],
+        "address" => $_POST['address'],
+        "postalCode" => $_POST['postalCode'],
+    );
+    // filter out empty values
+    $values = array_filter($values);
+    if ($values) {
+        $query = "UPDATE Employee SET ";
 
-    // bind the parameters
-    $sql = "UPDATE ".DBNAME.".Employee 
-        SET 
-        firstName = :firstName,
-        lastName = :lastName,
-        dateOfBirth = :dateOfBirth,
-        medicareCardNumber = :medicareCardNumber,
-        employeeRole = :employeeRole,
-        telephoneNumber = :telephoneNumber,
-        citizenship = :citizenship,
-        email = :email,
-        country = :country,
-        province = :province,
-        city = :city,
-        address = :address,
-        postalCode = :postalCode
-        WHERE ID = :id;";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(":firstName", $firstName);
-    $stmt->bindParam(":lastName", $lastName);
-    $stmt->bindParam(":dateOfBirth", $dateOfBirth);
-    $stmt->bindParam(":medicareCardNumber", $medicareCardNumber);
-    $stmt->bindParam(":employeeRole", $employeeRole);
-    $stmt->bindParam(":telephoneNumber", $telephoneNumber);
-    $stmt->bindParam(":citizenship", $citizenship);
-    $stmt->bindParam(":email", $email);
-    $stmt->bindParam(":country", $country);
-    $stmt->bindParam(":province", $province);
-    $stmt->bindParam(":city", $city);
-    $stmt->bindParam(":address", $address);
-    $stmt->bindParam(":postalCode", $postalCode);
-    $stmt->bindParam(":id", $id);
-
-    // execute the statement
-    if($stmt->execute() == TRUE){
-        // echo "Entries added";
-        $success = true;
-    } else {
-        // echo "Error: " . $sql . "<br>" . $conn->error;
-        $success = false;
+        $valuesQuery = array();
+        foreach ($values as $key=>$value)
+            $valuesQuery[] = "$key=:$key";
+        
+        $query .= implode(', ', $valuesQuery);
+        $query .= ' WHERE id=:id;';
+        $stmt = $conn->prepare($query);
+        foreach ($values as $key=>$value) {
+            $stmt->bindValue($key, $value);
+        }
+        $stmt->bindParam(':id', $id);
+        // execute the statement
+        if ($stmt->execute() == TRUE) {
+            // echo "Entries added";
+            $success = true;
+        } else {
+            //var_dump($stmt->errorInfo());
+            $success = false;
+        }
     }
 }
 
@@ -92,25 +76,25 @@ if(isset($_POST['submit'])){
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="firstName">First Name</label>
-                        <input type="text" class="form-control" id="firstName" name = "firstName" placeholder="FirstName" required>
+                        <input type="text" class="form-control" id="firstName" name = "firstName" placeholder="FirstName">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="lastName">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" name = "lastName" placeholder="LastName" required>
+                        <input type="text" class="form-control" id="lastName" name = "lastName" placeholder="LastName">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
                         <label for="dateOfBirth">Date Of Birth (YYYY-MM-DD)</label>
-                        <input type="text" class="form-control" id="dateOfBirth" name = "dateOfBirth" placeholder="YYYY-MM-DD" required>
+                        <input type="text" class="form-control" id="dateOfBirth" name = "dateOfBirth" placeholder="YYYY-MM-DD">
                     </div>
                     <div class="form-group col-md-3">
                         <label for="medicareCardNumber">MedicareCardNumber</label>
-                        <input type="text" class="form-control" id="medicareCardNumber" name = "medicareCardNumber" placeholder="MedicareCardNumber" required>
+                        <input type="text" class="form-control" id="medicareCardNumber" name = "medicareCardNumber" placeholder="MedicareCardNumber" >
                     </div>
                     <div class="form-group col-md-4">
                     <label for="employeeRole">Employee Role</label>
-                    <select class="form-select" aria-label="Default select example"id="employeeRole" name = "employeeRole" required>
+                    <select class="form-select" aria-label="Default select example"id="employeeRole" name = "employeeRole" >
                         <option value="Receptionist">Receptionist</option>
                         <option value="Pharmacist">Pharmacist</option>
                         <option value="Security personnel">Security personnel</option>
@@ -123,35 +107,31 @@ if(isset($_POST['submit'])){
                     </div>
                     <div class="form-group col-md-3">
                         <label for="telephoneNumber">Telephone Number</label>
-                        <input type="text" class="form-control" id="telephoneNumber" name = "telephoneNumber" placeholder="xxx-xxx-xxxx" required>
+                        <input type="text" class="form-control" id="telephoneNumber" name = "telephoneNumber" placeholder="xxx-xxx-xxxx">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="citizenship">Citizenship</label>
-                        <input type="text" class="form-control" id="citizenship" name = "citizenship" placeholder="Citizenship" required>
+                        <input type="text" class="form-control" id="citizenship" name = "citizenship" placeholder="Citizenship">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" name = "email" placeholder="Email Address" required>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="country">Country</label>
-                        <input type="text" class="form-control" id="country" name = "country" value = "Canada" disabled>
+                        <input type="email" class="form-control" id="email" name = "email" placeholder="Email Address" >
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
                     <label for="province">Province</label>
-                    <input type="text" class="form-control" id="province" name = "province" placeholder = "Province" required>
+                    <input type="text" class="form-control" id="province" name = "province" placeholder = "Province">
                     </div>
                     <div class="form-group col-md-2">
                     <label for="city">City</label>
-                    <input type="text" class="form-control" id="city" name = "city" placeholder = "City" required>
+                    <input type="text" class="form-control" id="city" name = "city" placeholder = "City" >
                     </div>                    
                     <div class="form-group col-md-6">
                     <label for="address">Address</label>
-                    <input type="text" class="form-control" id="address" name = "address" placeholder = "Address" required>
+                    <input type="text" class="form-control" id="address" name = "address" placeholder = "Address" >
                     </div>
                     <div class="form-group col-md-2">
                     <label for="postalCode">Postal Code</label>

@@ -1,10 +1,10 @@
 <?php
 require_once '../../database.php';
 
-$maxIDFetch = $conn->prepare('SELECT max(Employee.ID) FROM '.DBNAME.'.Employee');
-$maxIDFetch->execute();
-$maxEmployeeID = $maxIDFetch->fetchColumn();
-$id = $maxEmployeeID + 1;
+// $maxIDFetch = $conn->prepare('SELECT max(Employee.ID) FROM Employee');
+// $maxIDFetch->execute();
+// $maxEmployeeID = $maxIDFetch->fetchColumn();
+// $id = $maxEmployeeID + 1;
 
 if (isset($_POST['submit'])) {
     $firstName = $_POST['firstName'];
@@ -22,11 +22,10 @@ if (isset($_POST['submit'])) {
     $postalCode = $_POST['postalCode'];
 
     // prepare the statement
-    $sql = "INSERT INTO ".DBNAME.".Employee (ID, firstName, lastName, dateOfBirth,medicareCardNumber, employeeRole, telephoneNumber, citizenship, email, country, province, city, address, postalCode) VALUES (:id, :firstName, :lastName, :dateOfBirth, :medicareCardNumber, :employeeRole, :telephoneNumber, :citizenship, :email, :country, :province, :city, :address, :postalCode)";
+    $sql = "INSERT INTO Employee (firstName, lastName, dateOfBirth,medicareCardNumber, employeeRole, telephoneNumber, citizenship, email, country, province, city, address, postalCode) VALUES (:firstName, :lastName, :dateOfBirth, :medicareCardNumber, :employeeRole, :telephoneNumber, :citizenship, :email, :country, :province, :city, :address, :postalCode)";
     $stmt = $conn->prepare($sql);
 
     // bind the parameters
-    $stmt->bindParam(':id', $id);
     $stmt->bindParam(':firstName', $firstName);
     $stmt->bindParam(':lastName', $lastName);
     $stmt->bindParam(':dateOfBirth', $dateOfBirth);
