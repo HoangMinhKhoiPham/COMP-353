@@ -1,51 +1,43 @@
 <?php
 require_once '../../database.php';
-if (isset($conn)) {
-    $statement = $conn->prepare('SELECT * FROM ' . DBNAME . '.Schedule WHERE Schedule.employeeID = :employeeID AND Schedule.facilityID = :facilityID AND Schedule.shiftStart = :shiftStart;');
-    $statement->bindParam(":employeeID", $employeeID);
-    $statement->bindParam(":facilityID", $facilityID);
-    $statement->bindParam(":shiftStart", $shiftStart);
-    $statement->execute(); //executes the query above
-    $current_case = $statement->fetchAll();
-    $employeeID = $_GET["employeeID"];
-    $facilityID = $_GET["facilityID"];
-    $shiftStart = $_GET["shiftStart"];
 
-    if (isset($_POST['submit'])) {
-        $employeeID = $_POST['employeeID'];
-        $facilityID = $_POST['facilityID'];
-        $shiftStart = $_POST['shiftStart'];
-        $shiftEnd = $_POST['shiftEnd'];
+$statement = $conn->prepare('SELECT * FROM ' . DBNAME . '.Schedule WHERE Schedule.employeeID = :employeeID AND Schedule.facilityID = :facilityID AND Schedule.shiftStart = :shiftStart;');
+$statement->bindParam(":employeeID", $employeeID);
+$statement->bindParam(":facilityID", $facilityID);
+$statement->bindParam(":shiftStart", $shiftStart);
+$statement->execute(); //executes the query above
+$employeeID = $_GET["employeeID"];
+$facilityID = $_GET["facilityID"];
+$shiftStart = $_GET["shiftStart"];
 
-        // bind the parameters
-        $sql = "UPDATE " . DBNAME . ".Schedule 
+if (isset($_POST['submit'])) {
+    $employeeID = $_POST['employeeID'];
+    $facilityID = $_POST['facilityID'];
+    $shiftStart = $_POST['shiftStart'];
+    $shiftEnd = $_POST['shiftEnd'];
+
+    // bind the parameters
+    $sql = "UPDATE " . DBNAME . ".Schedule 
         SET 
-        employeeID = :employeeID,
-        facilityID = :facilityID,
-        shiftStart = :shiftStart,
-        shiftEnd = :shiftEnd
-        WHERE 
-        employeeID = :employeeID AND
+        shiftEnd = :shiftEnd,
+        WHERE employeeID = :employeeID AND
         facilityID = :facilityID AND
         shiftStart = :shiftStart";
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(":shiftEnd", $shiftEnd);
-        $stmt->bindParam(":employeeID", $employeeID);
-        $stmt->bindParam(":facilityID", $facilityID);
-        $stmt->bindParam(":shiftStart", $shiftStart);
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(":shiftEnd", $shiftEnd);
+    $stmt->bindParam(":employeeID", $employeeID);
+    $stmt->bindParam(":facilityID", $facilityID);
+    $stmt->bindParam(":shiftStart", $shiftStart);
 
-        // execute the statement
-        if ($stmt->execute() == TRUE) {
-            // echo "Entries added";
-            $success = true;
-        } else {
-            // echo "Error: " . $sql . "<br>" . $conn->error;
-            $success = false;
-        }
+    // execute the statement
+    if ($stmt->execute() == TRUE) {
+        // echo "Entries added";
+        $success = true;
+    } else {
+        // echo "Error: " . $sql . "<br>" . $conn->error;
+        $success = false;
     }
-} else {
-    print_r("DBO CONN ERROR");
 }
 
 ?>
@@ -77,21 +69,21 @@ if (isset($conn)) {
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="employeeID">Employee ID</label>
-                            <input type="text" class="form-control" id="employeeID" name="employeeID" placeholder="employeeID" value="<?php echo isset($current_case[0]['employeeID']) ? ($current_case[0]['employeeID']) : "" ?>" required>
+                            <input type="text" class="form-control" id="employeeID" name="employeeID" placeholder="employeeID" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="facilityID">Facility ID</label>
-                            <input type="text" class="form-control" id="facilityID" name="facilityID" placeholder="facilityID" value="<?php echo isset($current_case[0]['facilityID']) ? ($current_case[0]['facilityID']) : "" ?>" required>
+                            <input type="text" class="form-control" id="facilityID" name="facilityID" placeholder="facilityID" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-row col-md-6">
                             <label for="shiftStart">shiftStart</label>
-                            <input type="text" class="form-control" id="shiftStart" name="shiftStart" placeholder="YYYY/MM/DD HH:MM:SS" value="<?php echo isset($current_case[0]['shiftStart']) ? ($current_case[0]['shiftStart']) : "" ?>" required>
+                            <input type="text" class="form-control" id="shiftStart" name="shiftStart" placeholder="YYYY/MM/DD HH:MM:SS" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="shiftEnd">shiftEnd</label>
-                            <input type="text" class="form-control" id="shiftEnd" name="shiftEnd" placeholder="YYYY/MM/DD HH:MM:SS" value="<?php echo isset($current_case[0]['shiftEnd']) ? ($current_case[0]['shiftEnd']) : "" ?>" required>
+                            <input type="text" class="form-control" id="shiftEnd" name="shiftEnd" placeholder="YYYY/MM/DD HH:MM:SS" required>
                         </div>
                     </div>
                     <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>

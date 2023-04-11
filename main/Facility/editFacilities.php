@@ -1,72 +1,123 @@
 <?php
 require_once '../../database.php';
 
-$statement = $conn->prepare('SELECT * FROM Facilities WHERE Facilities.id = :php_id;');
-$statement->bindParam(":php_id", $_GET["ID"]);
+$statement = $conn->prepare('SELECT * FROM Facilities WHERE Facilities.id = :id;');
+$statement->bindParam(":id", $_GET["ID"]);
 $statement->execute(); //executes the query above
-$php_id = (int) $_GET["ID"];
+$id = (int) $_GET["ID"];
 $success = false;
 
-$current_case = $statement->fetchAll();
-
 if (isset($_POST['submit'])) {
-    $facilityType = $_POST['facilityType'];
-    $capacity = $_POST['capacity'];
-    $phoneNumber = $_POST['phoneNumber'];
-    $facilityName = $_POST['facilityName'];
-    $managerID = $_POST['managerID'];
-    $province = $_POST['province'];
-    $city = $_POST['city'];
-    $address = $_POST['address'];
-    $webAddress = $_POST['webAddress'];
-    $id = $php_id;
+    $values = array(
+        "facilityType" => $_POST['facilityType'],
+        "capacity" => (int) $_POST['capacity'],
+        "phoneNumber" => $_POST['phoneNumber'],
+        "facilityName" => $_POST['facilityName'],
+        "managerID" => $_POST['managerID'],
+        "province" => $_POST['province'],
+        "city" => $_POST['city'],
+        "address" => $_POST['address'],
+        "webAddress" => $_POST['webAddress'], 
+    );
 
-    //bind the parameters
-    $sql = "UPDATE " . DBNAME . ".Facilities 
-        SET 
-        facilityType = :facilityType,
-        capacity = :capacity,
-        phoneNumber = :phoneNumber,
-        facilityName = :facilityName,
-        managerID = :managerID,
-        province = :province,
-        city = :city,
-        address = :address,
-        webAddress = :webAddress,
-        WHERE id = :id;";
+    // filter out empty values
+    $values = array_filter($values);
+    if ($values) {
+        $query = "UPDATE Facilities SET ";
 
-    //    WHERE id = ".$id.";";
-    // $sql = "UPDATE Facilities SET  capacity = " . $_POST['capacity'] . " WHERE id = " . $_GET["ID"] . "";
-    // echo $_POST['facilityType'];
-    // // if (isset($_POST['facilityType'])) {
-    // //     $sql = $sql." facilityType=" .$_POST['facilityType'];
-    // // }
-    // // if (isset($_POST['capacity'])) {
-    // //     $sql = $sql." capacity=" .$_POST['capacity'];
-    // // }
-    // // $sql .= "WHERE id = ".$_GET["ID"]."";
-    // var_dump($sql);
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(":facilityType", $facilityType);
-    $stmt->bindParam(":capacity", $capacity);
-    $stmt->bindParam(":phoneNumber", $phoneNumber);
-    $stmt->bindParam(":facilityName", $facilityName);
-    $stmt->bindParam(":managerID", $managerID);
-    $stmt->bindParam(":province", $province);
-    $stmt->bindParam(":city", $city);
-    $stmt->bindParam(":address", $address);
-    $stmt->bindParam(":webAddress", $webAddress);
-    $stmt->bindParam(":id", $id);
-
-
-    // execute the statement
-    if ($stmt->execute() == TRUE) {
-        // echo "Entries added";
-        $success = true;
-    } else {
-        var_dump($stmt->errorInfo());
-        $success = false;
+        $valuesQuery = array();
+        foreach ($values as $key=>$value)
+            $valuesQuery[] = "$key=:$key";
+        
+        $query .= implode(', ', $valuesQuery);
+        $query .= ' WHERE id=:id;';
+        var_dump($query);
+        $stmt = $conn->prepare($query);
+        foreach ($values as $key=>$value) {
+            $stmt->bindValue($key, $value);
+        }
+        $stmt->bindParam(':id', $id);
+        // execute the statement
+        if ($stmt->execute() == TRUE) {
+            // echo "Entries added";
+            $success = true;
+        } else {
+            var_dump($stmt->errorInfo());
+            $success = false;
+        }
     }
+
+    // if ($facilityType) {
+    //     $stmt = $conn->prepare("UPDATE Facilities SET facilityType='".$facilityType."' WHERE id = ".$id.";");
+    //     $stmt->execute();
+    // }
+    // if ($capacity) {
+    //     $stmt = $conn->prepare("UPDATE Facilities SET capacity='".$capacity."' WHERE id = ".$id.";");
+    //     $stmt->execute();
+    // }
+    // if ($phoneNumber) {
+    //     $stmt = $conn->prepare("UPDATE Facilities SET phoneNumber='".$phoneNumber."' WHERE id = ".$id.";");
+    //     $stmt->execute();
+    // }
+    // if ($facilityName) {
+    //     $stmt = $conn->prepare("UPDATE Facilities SET facilityName='".$facilityName."' WHERE id = ".$id.";");
+    //     $stmt->execute();
+    // }
+    // if ($managerID) {
+    //     $stmt = $conn->prepare("UPDATE Facilities SET managerID='".$managerID."' WHERE id = ".$id.";");
+    //     $stmt->execute();
+    // }
+    // if ($province) {
+    //     $stmt = $conn->prepare("UPDATE Facilities SET province='".$province."' WHERE id = ".$id.";");
+    //     $stmt->execute();
+    // }
+    // if ($city) {
+    //     $stmt = $conn->prepare("UPDATE Facilities SET city='".$city."' WHERE id = ".$id.";");
+    //     $stmt->execute();
+    // }
+    // if ($address) {
+    //     $stmt = $conn->prepare("UPDATE Facilities SET address='".$address."' WHERE id = ".$id.";");
+    //     $stmt->execute();
+    // }
+    // if ($webAddress) {
+    //     $stmt = $conn->prepare("UPDATE Facilities SET webAddress='".$webAddress."' WHERE id = ".$id.";");
+    //     $stmt->execute();
+    // }
+
+    // bind the parameters
+    // $sql = "UPDATE " . DBNAME . ".Facilities 
+    //     SET 
+    //     facilityType = :facilityType,
+    //     capacity = :capacity,
+    //     phoneNumber = :phoneNumber,
+    //     facilityName = :facilityName,
+    //     managerID = :managerID,
+    //     province = :province,
+    //     city = :city,
+    //     address = :address,
+    //     webAddress = :webAddress,
+    //     WHERE id = ".$id.";";
+    // $sql = "UPDATE Facilities SET  capacity = " .$_POST['capacity']." WHERE id = ".$_GET["ID"]."";
+    // echo $_POST['facilityType'];
+    // if (isset($_POST['facilityType'])) {
+    //     $sql = $sql." facilityType=" .$_POST['facilityType'];
+    // }
+    // if (isset($_POST['capacity'])) {
+    //     $sql = $sql." capacity=" .$_POST['capacity'];
+    // }
+    // $sql .= "WHERE id = ".$_GET["ID"]."";
+    // var_dump($sql);
+    // $stmt = $conn->prepare($sql);
+    // $stmt->bindParam(":facilityType", $facilityType);
+    // $stmt->bindParam(":capacity", $capacity);
+    // $stmt->bindParam(":phoneNumber", $phoneNumber);
+    // $stmt->bindParam(":facilityName", $facilityName);
+    // $stmt->bindParam(":managerID", $managerID);
+    // $stmt->bindParam(":province", $province);
+    // $stmt->bindParam(":city", $city);
+    // $stmt->bindParam(":address", $address);
+    // $stmt->bindParam(":webAddress", $webAddress);
+    //$stmt->bindParam(":id", $id);
 }
 
 ?>
@@ -98,52 +149,49 @@ if (isset($_POST['submit'])) {
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="facilityType">Facility Type</label>
-                            <input type="text" class="form-control" id="facilityType" name="facilityType" placeholder="facilityType" value="<?php echo isset($current_case[0]['facilityType']) ? ($current_case[0]['facilityType']) : "" ?>">
+                            <input type="text" class="form-control" id="facilityType" name="facilityType" placeholder="facilityType">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="capacity">Capacity</label>
-                            <input type="text" class="form-control" id="capacity" name="capacity" placeholder="capacity" value="<?php echo isset($current_case[0]['capacity']) ? ($current_case[0]['capacity']) : "" ?>">
+                            <input type="text" class="form-control" id="capacity" name="capacity" placeholder="capacity">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-row col-md-6">
                             <label for="phoneNumber">PhoneNumber</label>
-                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="xxx-xxx-xxxx" value="<?php echo isset($current_case[0]['phoneNumber']) ? ($current_case[0]['phoneNumber']) : "" ?>">
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="xxx-xxx-xxxx">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="facilityName">Facility Name</label>
-                            <input type="text" class="form-control" id="facilityName" name="facilityName" placeholder="facilityName" value="<?php echo isset($current_case[0]['facilityName']) ? ($current_case[0]['facilityName']) : "" ?>">
+                            <input type="text" class="form-control" id="facilityName" name="facilityName" placeholder="facilityName">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="managerID">managerID</label>
-                            <input type="text" class="form-control" id="managerID" name="managerID" placeholder="managerID" value="<?php echo isset($current_case[0]['managerID']) ? ($current_case[0]['managerID']) : "" ?>">
+                            <input type="text" class="form-control" id="managerID" name="managerID" placeholder="managerID">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="province">Province</label>
-                            <input type="text" class="form-control" id="province" name="province" placeholder="province">
-                            value="<?php echo isset($current_case[0]['province']) ? ($current_case[0]['province']) : "" ?>">
+                            <input type="text" class="form-control" id="province" name="province" placeholder="province" >
                         </div>
                         <div class="form-group col-md-6">
                             <label for="city">City</label>
-                            <input type="text" class="form-control" id="city" name="city" placeholder="city" value="<?php echo isset($current_case[0]['city']) ? ($current_case[0]['city']) : "" ?>">
+                            <input type="text" class="form-control" id="city" name="city" placeholder="city">
                         </div>
                         <div class="form-group col-md-2">
                             <label for="address">Address</label>
-                            <input type="text" class="form-control" id="address" name="address" value="address" value="<?php echo isset($current_case[0]['address']) ? ($current_case[0]['address']) : "" ?>">
+                            <input type="text" class="form-control" id="address" name="address" placeholder="address" >
                         </div>
                         <div class="form-group col-md-2">
                             <label for="webAddress">webAddress</label>
-                            <input type="text" class="form-control" id="webAddress" name="webAddress" value="webAddress" value="<?php echo isset($current_case[0]['webAddress']) ? ($current_case[0]['webAddress']) : "" ?>">
+                            <input type="text" class="form-control" id="webAddress" name="webAddress" placeholder="webAddress">
                         </div>
                     </div>
                     <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>
                     <?php
-                    if (isset($success) && $success) {
-                        echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Entry Updated</h3>';
-                        echo "<script> location.href='" . BASE_URL . "Facility/displayFacilities.php'; </script>";
-                        exit();
+                    if ($success == true) {
+                        echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Update Successful!!</h3>';
                     } else {
                         echo "";
                     }
