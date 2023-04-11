@@ -1,55 +1,59 @@
 <?php
 require_once '../../database.php';
 
-$statement = $conn->prepare('SELECT * FROM Schedule WHERE Schedule.employeeID = :employeeID AND Schedule.facilityID = :facilityID AND Schedule.shiftStart = :shiftStart;');
-$statement->bindParam(":employeeID", $_GET["employeeID"]);
-$statement->bindParam(":facilityID", $_GET["facilityID"]);
-$statement->bindParam(":shiftStart", $_GET["shiftStart"]);
-$statement->execute(); //executes the query above
-$employeeID = (int) $_GET["employeeID"];
-$facilityID = (int) $_GET["facilityID"];
-$shiftStart = $_GET["shiftStart"];
+
+
 $success = false;
+$employeeID = $_GET["employeeID"];
+$facilityID = $_GET["facilityID"];
+$shiftStart = $_GET["shiftStart"];
+if (isset($conn)) {
+    $statement = $conn->prepare('SELECT * FROM ' . DBNAME . '.Schedule WHERE Schedule.employeeID = :employeeID AND Schedule.facilityID = :facilityID AND Schedule.shiftStart = :shiftStart;');
+    $statement->bindParam(":employeeID", $employeeID);
+    $statement->bindParam(":facilityID", $facilityID);
+    $statement->bindParam(":shiftStart", $shiftStart);
+    $statement->execute(); //executes the query above
+
+    $optionFetch = $conn->prepare('SELECT id, facilityName FROM ' . DBNAME . '.Facilities order by id');
+    $optionFetch->execute();
+    $options = $optionFetch->fetchAll();
+
+    $employeeDetails = $conn->prepare('SELECT * FROM ' . DBNAME . '.Employee where id=:employeeID');
+    $employeeDetails->bindParam(":employeeID", $employeeID);
+    $employeeDetails->execute();
+    $employeeInfo = $employeeDetails->fetchAll()[0];
+
+    $data = $statement->fetchAll()[0];
 
 
+    if (isset($_POST['submit'])) {
+        $employeeID = $_POST['employeeID'];
+        $facilityID = $_POST['facilityID'];
+        $shiftStart = $_POST['shiftStart'];
+        $shiftEnd = $_POST['shiftEnd'];
 
-if (isset($_POST['submit'])) {
-    $values = array(
-        "employeeID" => $_POST['employeeID'],
-        "shiftStart" => $_POST['shiftStart'],
-        "facilityID" => $_POST['facilityID'],
-        "shiftEnd" => $_POST['shiftEnd'],
-    );
-    // filter out empty values
-    $values = array_filter($values);
-    if ($values) {
-        $query = "UPDATE Schedule SET ";
-        $valuesQuery = array();
-        foreach ($values as $key=>$value)
-            $valuesQuery[] = "$key=:$key";
-        
-        $query .= implode(', ', $valuesQuery);
-        $query .= ' WHERE employeeID=:employeeID AND facilityID = :facilityID AND shiftStart = :shiftStart;';
-        var_dump($query);
-        $stmt = $conn->prepare($query);
-        foreach ($values as $key=>$value) {
-            if ($key == 'employeeID') {
-                $stmt->bindParam(":employeeID", $employeeID);
-            } else if ($key == 'facilityID') {
-                $stmt->bindParam(":facilityID", $facilityID);
-            } else if ($key == 'shiftStart') {
-                $stmt->bindParam(":shiftStart", $shiftStart);
-            } else {
-                $stmt->bindValue($key, $value);
-            }
+        // bind the parameters
+        $sql = "UPDATE " . DBNAME . ".Schedule 
+        SET 
+        shiftEnd = :shiftEnd,
+        WHERE employeeID = :employeeID AND
+        facilityID = :facilityID AND
+        shiftStart = :shiftStart";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(":shiftEnd", $shiftEnd);
+        $stmt->bindParam(":employeeID", $employeeID);
+        $stmt->bindParam(":facilityID", $facilityID);
+        $stmt->bindParam(":shiftStart", $shiftStart);
+
+        // execute the statement
+        if ($stmt->execute() == TRUE) {
+            // echo "Entries added";
+            $success = true;
+        } else {
+            // echo "Error: " . $sql . "<br>" . $conn->error;
+            $success = false;
         }
-    // execute the statement
-    if ($stmt->execute() == TRUE) {
-        // echo "Entries added";
-        $success = true;
-    } else {
-        var_dump($stmt->errorInfo());
-        $success = false;
     }
 }
 
@@ -70,50 +74,85 @@ if (isset($_POST['submit'])) {
 
 <body>
 
-    <div id="page-container">
-        <div id="page-wrap" style="width:100%">
-            <?php include '../navBar.php'; ?>
-            <?php include '../searchBar.php'; ?>
+<div id="page-container">
+    <div id="page-wrap" style="width:100%">
+        <?php include '../navBar.php'; ?>
+        <?php include '../searchBar.php'; ?>
 
-            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> Update a schedule record </h1>
-            <div id="insertEmployeeForm" style="margin-top:10px">
+        <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> Update a schedule record </h1>
+        <div id="insertEmployeeForm" style="margin-top:10px">
 
-                <form style="width:100%; padding:30px" method="POST">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="employeeID">Employee ID</label>
-                            <input type="text" class="form-control" id="employeeID" name="employeeID" placeholder="employeeID" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="facilityID">Facility ID</label>
-                            <input type="text" class="form-control" id="facilityID" name="facilityID" placeholder="facilityID" required>
-                        </div>
+            <form style="width:100%; padding:30px" method="POST">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label for="employeeID">Employee ID</label>
+                        <input type="text" class="form-control" id="employeeID" name="employeeID" placeholder="employeeID"
+                               value="<?php echo $data['employeeID']; ?>" disabled
+                               required>
                     </div>
-                    <div class="form-row">
-                        <div class="form-row col-md-6">
-                            <label for="shiftStart">shiftStart</label>
-                            <input type="text" class="form-control" id="shiftStart" name="shiftStart" placeholder="YYYY/MM/DD HH:MM:SS" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="shiftEnd">shiftEnd</label>
-                            <input type="text" class="form-control" id="shiftEnd" name="shiftEnd" placeholder="YYYY/MM/DD HH:MM:SS" required>
-                        </div>
+                    <div class="form-group col-md-4">
+                        <label for="employeeID">Employee Name</label>
+                        <input type="text" class="form-control" id="DisplayName" name="DisplayName" placeholder="DisplayName"
+                               value="<?php echo $employeeInfo['firstName'] . ' '. $employeeInfo['lastName']; ?>" disabled>
                     </div>
-                    <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>
-                    <?php
-                    if ($success == true) {
-                        echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Update Successful</h3>';
-                    } else {
-                        echo "";
-                    }
-                    ?>
-                </form>
+                    <div class="form-group col-md-6">
+                        <label for="facilityID">Facility ID</label>
+                        <select class="form-select" aria-label="selectTypeOfInfection" id="facilityID" name = "facilityID" required>
+                            <?php
+                            if (isset($options)) {
+                                foreach ($options as $option) {
+                                    if ($option['id'] == $data['facilityID']) {
+                                        echo "<option selected=\"selected\" value=" . $option['id'] . ">" . $option['facilityName'] . "</option>";
+
+                                    } else {
+                                        echo "<option value=" . $option['id'] . ">" . $option['facilityName'] . "</option>";
+                                    }
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="shiftStart">shiftStart</label>
+                        <input type="datetime-local" class="form-control" id="shiftStart"
+                               name = "shiftStart"
+                               placeholder="YYYY/MM/DD HH:MM:SS"
+                               value="<?php echo isset($data['shiftStart']) ? ($data['shiftStart']) : "" ?>"
+                               required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="shiftEnd">shiftEnd</label>
+                        <input type="datetime-local" class="form-control" id="shiftEnd"
+                               name = "shiftEnd"
+                               placeholder="YYYY/MM/DD HH:MM:SS"
+                               value="<?php echo isset($data['shiftEnd']) ? ($data['shiftEnd']) : "" ?>"
+                               required>
+                    </div>
+                </div>
+                <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>
+                <?php
+                if ($success) {
+                    echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Update Successful</h3>';
+                    echo "<script> location.href='".BASE_URL."Schedule/displaySchedule.php'; </script>";
+                    exit();
+                } else {
+                    echo "";
+                }
+                ?>
+            </form>
+
+            <div>
                 <div>
-                    <div>
-                        <div id="footer">
-                            <?php include '../footer.php'; ?>
-                            <div>
-                                <div>
+                    <div id="footer">
+                        <?php include '../footer.php'; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>

@@ -6,6 +6,11 @@ if (isset($conn)) {
     $optionFetch->execute();
     $options = $optionFetch->fetchAll();
 
+    $employeeList = $conn->prepare('SELECT id, firstName, lastName FROM ' . DBNAME . '.Employee order by id');
+    $employeeList->execute();
+    $employeeListOption = $employeeList->fetchAll();
+
+
     if (isset($_POST['submit'])) {
         $dateOfInfection = $_POST['dateOfInfection'];
         $employeeID = $_POST['employeeID'];
@@ -68,8 +73,16 @@ if (isset($conn)) {
                 <form style="width:100%; padding:30px" method="POST">
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="typeOfInfection">Employee ID</label>
-                            <label for="employeeID"></label><input type="number" min="0" class="form-control" id="employeeID" name="employeeID" placeholder="employeeID" required>
+                            <label for="employeeID">Employee ID</label>
+                            <select class="form-select" aria-label="selectEmployee" id="employeeID" name = "employeeID" required>
+                                <?php
+                                if (isset($employeeListOption)) {
+                                    foreach ($employeeListOption as $emp_elem) {
+                                        echo "<option value=" . $emp_elem['id'] . ">" . $emp_elem['id'] . ' - '. $emp_elem['firstName'] . ' '. $emp_elem['lastName'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="infectionCaseID">Infection Case ID</label>

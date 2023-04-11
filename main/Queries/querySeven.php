@@ -1,3 +1,9 @@
+<?php
+require_once '../../database.php';
+$optionFetch = $conn->prepare('SELECT id, facilityName FROM ' . DBNAME . '.Facilities order by id');
+$optionFetch->execute();
+$options = $optionFetch->fetchAll();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,19 +19,32 @@
 
 <body>
 
-    <div id="page-container">
-        <div id="page-wrap">
-            <?php include_once '../navBar.php'; ?>
-            <form class="form-inline" action="getEmployee.php" method="GET">
-                <label  class="my-1 mr-2" for="facility">Which facility would you like to see a list of all the employees currently working there?</label>
-                <input  style="width: 50%" type="text" class="form-control" name="facility" placeholder="Hospital Maisonneuve Rosemont">
+<div id="page-container">
+    <div id="page-wrap">
+        <?php include_once '../navBar.php'; ?>
+        <div class="container">
+            <form class="form" action="getEmployee.php" method="GET">
+                <label class="md-4" style="margin-top: 15px" for="facility">Which facility would you like to see a list of all the employees currently working there?</label>
+                <div class="form-group col-md-6">
+                    <label for="facilityID">Facility ID</label>
+                    <select class="form-select" aria-label="selectFacility" id="facilityID" name = "facilityID" required>
+                        <?php
+                        if (isset($options)) {
+                            foreach ($options as $option) {
+                                echo "<option value=" . $option['id'] . ">" . $option['id'] . ' - '. $option['facilityName'] . "</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
                 <button style="margin: 10px" type="submit" class="btn btn-primary my-1">Submit</button>
             </form>
-            <div id="footer">
-                <?php include_once '../footer.php'; ?>
-            <div>
-        <div>
-    <div>
+        </div>
+        <div id="footer">
+            <?php include_once '../footer.php'; ?>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>

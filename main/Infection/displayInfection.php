@@ -1,9 +1,21 @@
 <?php require_once '../../database.php';
 if (isset($conn)) {
-    $statement = $conn->prepare('SELECT * FROM '.DBNAME.'.HasCaught HC
+    if (!empty($_GET)) {
+        $statement = $conn->prepare('SELECT * FROM '.DBNAME.'.HasCaught HC
         JOIN '.DBNAME.'.Infection I
-        ON HC.infectionID = I.infectionID ORDER BY employeeID');
-    $statement->execute(); //executes the query above
+        ON HC.infectionID = I.infectionID
+        JOIN Employee E on E.id = HC.employeeID
+        ORDER BY HC.'. $_GET['sort']);
+        $statement->execute();
+    } else { // sort by date DESC
+        $statement = $conn->prepare('SELECT * FROM '.DBNAME.'.HasCaught HC
+        JOIN '.DBNAME.'.Infection I
+        ON HC.infectionID = I.infectionID
+        JOIN Employee E on E.id = HC.employeeID
+        ORDER BY dateOfInfection DESC');
+        $statement->execute(); //executes the query above
+    }
+
 } else {
     print_r("PDO CONN ERROR");
 }
@@ -29,17 +41,28 @@ if (isset($conn)) {
     <div id = "page-wrap">
         <?php include '../navBar.php';?>
         <?php include '../searchBar.php';?>
+        <div class="md">
+            <div class="col">
+                <h3>Sort</h3>
+                <a class="btn btn-secondary" href="displayInfection.php?sort=employeeID">Sort By Employee ID ASC</a>
+                <a class="btn btn-secondary" href="displayInfection.php?sort=infectionID">Sort By Type Of Infection</a>
+                <a class="btn btn-secondary" href="displayInfection.php?sort=dateOfInfection">Sort By Date Of Infection ASC</a>
+                <a class="btn btn-secondary" href="displayInfection.php">Sort By Date Of Infection DESC</a>
+            </div>
+        </div>
+
 
         <h1 style='text-align:center; font-family:Museosans,serif; margin-top:10px'> List of Infection Cases </h1>
         <div class="table-condensed">
             <table class="table" style= "padding:20px;">
                 <thead>
                 <tr class="hoverUpon">
-                    <th scope="col" style="font-size:10px">Date of Infection</th>
-                    <th scope="col" style="font-size:10px">Employee ID</th>
-                    <th scope="col" style="font-size:10px">Type of Infection</th>
-                    <th scope="col" style="font-size:10px">Infection Case ID</th>
-                    <th scope="col" style="font-size:10px">Options</th>
+                    <th scope="col" style="font-size:15px">Date of Infection</th>
+                    <th scope="col" style="font-size:15px">Employee ID</th>
+                    <th scope="col" style="font-size:15px">Employee Name</th>
+                    <th scope="col" style="font-size:15px">Type of Infection</th>
+                    <th scope="col" style="font-size:15px">Infection Case ID</th>
+                    <th scope="col" style="font-size:15px">Options</th>
 
                 </tr>
                 </thead>
@@ -48,6 +71,7 @@ if (isset($conn)) {
                     <tr class="hoverUpon">
                         <td style="font-size:15px"><?= $row["dateOfInfection"] ?></td>
                         <td style="font-size:15px"><?= $row["employeeID"] ?></td>
+                        <td style="font-size:15px"><?= $row["firstName"] .' ' .$row['lastName'] ?></td>
                         <td style="font-size:15px"><?= $row["typeOfInfection"] ?></td>
                         <td style="font-size:15px"><?= $row["infectionCaseID"] ?></td>
 

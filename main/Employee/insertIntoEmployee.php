@@ -90,7 +90,7 @@ if (isset($_POST['submit'])) {
                 <div class="form-row">
                     <div class="form-group col-md-2">
                         <label for="dateOfBirth">Date Of Birth (YYYY-MM-DD)</label>
-                        <input type="text" class="form-control" id="dateOfBirth" name = "dateOfBirth" placeholder="YYYY-MM-DD" required>
+                        <input type="date" class="form-control" id="dateOfBirth" name = "dateOfBirth" placeholder="YYYY-MM-DD" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="medicareCardNumber">MedicareCardNumber</label>
@@ -136,7 +136,7 @@ if (isset($_POST['submit'])) {
                     <div class="form-group col-md-2">
                     <label for="city">City</label>
                     <input type="text" class="form-control" id="city" name = "city" placeholder = "City" required>
-                    </div>                    
+                    </div>
                     <div class="form-group col-md-6">
                     <label for="address">Address</label>
                     <input type="text" class="form-control" id="address" name = "address" placeholder = "Address" required>

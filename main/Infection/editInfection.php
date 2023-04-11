@@ -12,6 +12,10 @@ if (isset($conn)) {
 
     $current_case = $statement->fetchAll();
 
+    $employeeList = $conn->prepare('SELECT id, firstName, lastName FROM ' . DBNAME . '.Employee order by id');
+    $employeeList->execute();
+    $employeeListOption = $employeeList->fetchAll();
+
     if (isset($_POST['submit'])) {
         $dateOfInfection = $_POST['dateOfInfection'];
         $employeeID = $_POST['employeeID'];
@@ -20,7 +24,6 @@ if (isset($conn)) {
 
         $infectionID = intval($infectionID);
 
-        // bind the parameters
         $sql = "UPDATE ".DBNAME.".HasCaught 
         SET
         dateOfInfection = :dateOfInfection,
@@ -28,7 +31,6 @@ if (isset($conn)) {
         infectionID = :infectionID
         WHERE infectionCaseID = :infectionCaseID;";
 
-        error_log($sql);
 
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':dateOfInfection', $dateOfInfection);
@@ -74,11 +76,21 @@ if (isset($conn)) {
             <form style="width:100%; padding:30px" method="POST" >
                 <div class="form-row">
                     <div class="form-group col-md-3">
-                        <label for="typeOfInfection">Employee ID</label>
-                        <label for="employeeID"></label><input type="number" min="0" class="form-control" id="employeeID" name = "employeeID"
-                                                               placeholder="employeeID"
-                                                               value="<?php echo isset($current_case[0]['employeeID']) ? ($current_case[0]['employeeID']) : "" ?>"
-                                                               required>
+                        <label for="employeeID">Employee ID</label>
+                        <select class="form-select" aria-label="selectEmployee" id="employeeID" name = "employeeID" required>
+                            <?php
+                            if (isset($employeeListOption)) {
+                                foreach ($employeeListOption as $emp_elem) {
+                                    if ($emp_elem['id'] == $current_case[0]['employeeID']) {
+                                        echo "<option selected=\"selected\" value=" . $emp_elem['id'] . ">" . $emp_elem['id'] . ' - '. $emp_elem['firstName'] . ' '. $emp_elem['lastName'] . "</option>";
+
+                                    } else {
+                                        echo "<option value=" . $emp_elem['id'] . ">" . $emp_elem['id'] . ' - '. $emp_elem['firstName'] . ' '. $emp_elem['lastName'] . "</option>";
+                                    }
+                                }
+                            }
+                            ?>
+                        </select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="infectionCaseID">Infection Case ID</label>

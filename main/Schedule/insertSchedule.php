@@ -1,26 +1,32 @@
 <?php
 require_once '../../database.php';
 
-$optionFetch = $conn->prepare('SELECT * FROM Schedule');
-$optionFetch->execute();
-$options = $optionFetch->fetchAll();
+$success = false;
+if (isset($conn)) {
+    $optionFetch = $conn->prepare('SELECT id, facilityName FROM ' . DBNAME . '.Facilities order by id');
+    $optionFetch->execute();
+    $options = $optionFetch->fetchAll();
 
-if (isset($_POST['submit'])) {
-    $employeeID = $_POST['employeeID'];
-    $facilityID = $_POST['facilityID'];
-    $shiftStart = $_POST['shiftStart'];
-    $shiftEnd = $_POST['shiftEnd'];
+    $employeeList = $conn->prepare('SELECT id, firstName, lastName FROM ' . DBNAME . '.Employee order by id');
+    $employeeList->execute();
+    $employeeListOption = $employeeList->fetchAll();
 
-    // prepare the statement
-    $sql = "INSERT INTO Schedule (employeeID, facilityID, shiftStart, shiftEnd)  
+    if (isset($_POST['submit'])) {
+        $employeeID = $_POST['employeeID'];
+        $facilityID = $_POST['facilityID'];
+        $shiftStart = $_POST['shiftStart'];
+        $shiftEnd = $_POST['shiftEnd'];
+
+        // prepare the statement
+        $sql = "INSERT INTO " . DBNAME . ".Schedule (employeeID, facilityID, shiftStart, shiftEnd)  
             VALUES (:employeeID, :facilityID, :shiftStart, :shiftEnd)";
-    $stmt = $conn->prepare($sql);
+        $stmt = $conn->prepare($sql);
 
-    // bind the parameters
-    $stmt->bindParam(':employeeID', $employeeID);
-    $stmt->bindParam(':facilityID', $facilityID);
-    $stmt->bindParam(':shiftStart', $shiftStart);
-    $stmt->bindParam(':shiftEnd', $shiftEnd);
+        // bind the parameters
+        $stmt->bindParam(':employeeID', $employeeID);
+        $stmt->bindParam(':facilityID', $facilityID);
+        $stmt->bindParam(':shiftStart', $shiftStart);
+        $stmt->bindParam(':shiftEnd', $shiftEnd);
 
 
     // execute the statement
@@ -30,7 +36,10 @@ if (isset($_POST['submit'])) {
         $success = false;
         $error = $stmt->errorInfo();
         echo "Error: " . $error[2];
+
     }
+} else {
+    print_r("DBO CONN ERROR");
 }
 
 ?>
@@ -64,17 +73,11 @@ if (isset($_POST['submit'])) {
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="employeeID">Employee ID</label>
-                            <<<<<<< Updated upstream <input type="text" class="form-control" id="employeeID" name="employeeID" placeholder="employeeID" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="facilityID">Facility ID</label>
-                            <input type="text" class="form-control" id="facilityID" name="facilityID" placeholder="facilityID" required>
-                            =======
-                            <select class="form-select" aria-label="selectEmployee" id="employeeID" name="employeeID" required>
+                            <select class="form-select" aria-label="selectEmployee" id="employeeID" name = "employeeID" required>
                                 <?php
                                 if (isset($employeeListOption)) {
                                     foreach ($employeeListOption as $emp_elem) {
-                                        echo "<option value=" . $emp_elem['id'] . ">" . $emp_elem['id'] . ' - ' . $emp_elem['firstName'] . ' ' . $emp_elem['lastName'] . "</option>";
+                                        echo "<option value=" . $emp_elem['id'] . ">" . $emp_elem['id'] . ' - '. $emp_elem['firstName'] . ' '. $emp_elem['lastName'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -82,7 +85,7 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="form-group col-md-6">
                             <label for="facilityID">Facility ID</label>
-                            <select class="form-select" aria-label="selectFacility" id="facilityID" name="facilityID" required>
+                            <select class="form-select" aria-label="selectFacility" id="facilityID" name = "facilityID" required>
                                 <?php
                                 if (isset($options)) {
                                     foreach ($options as $option) {
@@ -91,24 +94,22 @@ if (isset($_POST['submit'])) {
                                 }
                                 ?>
                             </select>
-                            >>>>>>> Stashed changes
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-row col-md-6">
+                        <div class="form-group col-md-6">
                             <label for="shiftStart">shiftStart</label>
-                            <<<<<<< Updated upstream <input type="text" class="form-control" id="shiftStart" name="shiftStart" placeholder="YYYY/MM/DD HH:MM:SS" required>
+                            <input type="datetime-local" class="form-control" id="shiftStart"
+                                   name = "shiftStart"
+                                   placeholder="YYYY/MM/DD HH:MM:SS"
+                                   required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="shiftEnd">shiftEnd</label>
-                            <input type="text" class="form-control" id="shiftEnd" name="shiftEnd" placeholder="YYYY/MM/DD HH:MM:SS" required>
-                            =======
-                            <input type="datetime-local" class="form-control" id="shiftStart" name="shiftStart" placeholder="YYYY/MM/DD HH:MM:SS" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="shiftEnd">shiftEnd</label>
-                            <input type="datetime-local" class="form-control" id="shiftEnd" name="shiftEnd" placeholder="YYYY/MM/DD HH:MM:SS" required>
-                            >>>>>>> Stashed changes
+                            <input type="datetime-local" class="form-control" id="shiftEnd"
+                                   name = "shiftEnd"
+                                   placeholder="YYYY/MM/DD HH:MM:SS"
+                                   required>
                         </div>
                     </div>
                     <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>

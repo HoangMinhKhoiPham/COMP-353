@@ -32,7 +32,7 @@ else{
   <div id = "page-container">
           <div id = "page-wrap">
               <?php include '../navBar.php';?>
-              <div id = "trueSearchBar"> 
+              <div id = "trueSearchBar">
                     <nav class="navbar navbar-light bg-light" style = "margin-left:auto; margin-right:auto;">
                      <form class="form-inline" action = "../Queries/queryTenRedirect.php"method = "get">
                         <input class="form-control mr-sm-2" name = "facilityName" type="search" placeholder="Search by Facility" aria-label="Search" required>
