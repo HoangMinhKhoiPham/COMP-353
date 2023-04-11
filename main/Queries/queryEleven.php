@@ -1,5 +1,8 @@
 <?php require_once '../../database.php';
-$statement = $conn->prepare("SELECT employeeID FROM Schedule WHERE (shiftStart >= (CURDATE() - INTERVAL 14 DAY) AND (shiftStart <= CURDATE()));"); // to change to school database name
+$statement = $conn->prepare("SELECT firstName, lastName, employeeRole FROM Employee WHERE ID IN (SELECT employeeID FROM Schedule 
+WHERE facilityID IN (SELECT ID FROM facilities WHERE facilityName ='Angelic Blossom Hospital Center') AND (CAST(shiftStart AS DATE) >= (CURDATE() - INTERVAL 14 DAY) AND (CAST(shiftStart AS DATE) <= CURDATE())))
+AND (employeeRole = 'Doctor' OR employeeRole = 'Nurse')
+ORDER BY employeeRole, firstName asc;"); // to change to school database name
 $statement->execute();
 ?>
 
@@ -23,30 +26,13 @@ $statement->execute();
     <div id="page-container">
         <div id="page-wrap">
             <?php include '../navBar.php'; ?>
-            <?php include '../searchBar.php'; ?>
-
-            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Doctors in Quebec (Query 14) </h1>
+            <form class="form-inline" action="getNurseAndDoctor.php" method="GET">
+                <label  class="my-1 mr-2" for="facility">Which facility would you like to see a list of all the nurses and doctors currently working there?</label>
+                <input  style="width: 40%" type="text" class="form-control" name="facility" placeholder="Hospital Maisonneuve Rosemont">
+                <button style="margin: 10px" type="submit" class="btn btn-primary my-1">Submit</button>
+            </form>
             <div class="table-condensed">
-                <table class="table" style="padding:20px;margin:20px; width:95%">
-                    <thead>
-                        <tr class="hoverUpon">
-                            <th scope="col" style="font-size: 15px" class="px-5">firstName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">lastName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">city</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">numberOfFacilitiesWorkedAt</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
-                            <tr class="hoverUpon">
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["firstName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["lastName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["city"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["numberOfFacilitiesWorkedAt"] ?></td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+                
                 <div>
                     <div id="footer">
                         <?php include '../footer.php'; ?>

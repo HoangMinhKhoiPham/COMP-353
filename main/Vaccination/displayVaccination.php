@@ -34,13 +34,12 @@ $statement->execute(); //executes the query above
                             <th scope="col" style="font-size:10px">Vaccine ID</th>
                             <th scope="col" style="font-size:10px">Vaccine Type</th>
                             <th scope="col" style="font-size:10px">Expiration in Months</th>
-                            <th scope="col" style="font-size:10px">options</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                             <tr class="hoverUpon">
-                                <td style="font-size:15px"><?= $row["vaccineID"] ?></td>
+                                <td style="font-size:15px"><?= $row["VaccineID"] ?></td>
                                 <td style="font-size:15px"><?= $row["vaccineType"] ?></td>
                                 <td style="font-size:15px"><?= $row["timeBeforeExpirationInMonth"] ?></td>
                                 <td>
@@ -52,9 +51,7 @@ $statement->execute(); //executes the query above
                     </tbody>
                 </table>
                 <div>
-                    <div id = 'footer'>
                     <?php include '../footer.php'; ?>
-                    <div>
                 </div>
             </div>
         </div>

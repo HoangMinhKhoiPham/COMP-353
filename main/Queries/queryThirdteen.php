@@ -31,7 +31,7 @@ $statement->execute();
             <?php include '../navBar.php'; ?>
             <?php include '../searchBar.php'; ?>
 
-            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of nurse(s) or doctor(s) who are currently working and has never been infected by COVID-19 (Query 13) </h1>
+            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> (Query 13) </h1>
             <div class="table-condensed">
                 <table class="table" style="padding:20px;margin:20px; width:95%">
                     <thead>
@@ -53,12 +53,12 @@ $statement->execute();
                         <?php } ?>
                     </tbody>
                 </table>
-                <div>
-                    <div id="footer">
-                        <?php include '../footer.php'; ?>
-                        <div>
-                            <div>
-                                <div>
+            </div>
+                <div id="footer">
+                    <?php include '../footer.php'; ?>
+                </div>
+        </div>
+    </div>                            
 </body>
 
 </html>
