@@ -1,7 +1,7 @@
-<?php 
+<?php
 require_once '../../database.php';
-if (isset($_GET['facility'])) {
-    $facility = $_GET['facility'];
+if (isset($_GET['facilityID'])) {
+    $facility = $_GET['facilityID'];
     $statement = $conn->prepare("SELECT 
 firstName,lastName,startDate,employeeRole,dateOfBirth,medicareCardNumber,
 telephoneNumber,address,city,province,postalCode,
@@ -12,6 +12,11 @@ WHERE facilityID = (SELECT ID FROM  Facilities WHERE
             facilityName = '".$facility."')
         AND endDate IS NULL) AS employeeIDList ORDER BY employeeRole, firstName, lastName;");
     $statement->execute();
+
+    $optionFetch = $conn->prepare('SELECT id, facilityName FROM ' . DBNAME . '.Facilities where id=:facilityID');
+    $optionFetch->bindParam(':facilityID', $facility);
+    $optionFetch->execute();
+    $options = $optionFetch->fetchAll();
 }
 ?>
 <!DOCTYPE html>
@@ -30,8 +35,8 @@ WHERE facilityID = (SELECT ID FROM  Facilities WHERE
   <div id = "page-container">
           <div id = "page-wrap">
               <?php include '../navBar.php';?>
-              
-              <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Employees In <?php echo $_GET['facility'] ?> in Quebec (Query 7) </h1>
+
+              <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Employees In <?php echo $options[0]['facilityName']; ?> in Quebec (Query 7) </h1>
               <div class="table-condensed">
               <table class="table" style= "padding:20px;margin:20px; width:95%">
                 <thead>
@@ -43,7 +48,7 @@ WHERE facilityID = (SELECT ID FROM  Facilities WHERE
                     <th scope="col" style="font-size: 15px" class = "px-5">telephoneNumber</th>
                     <th scope="col" style="font-size: 15px" class = "px-5">address</th>
                     <th scope="col" style="font-size: 15px" class = "px-5">city</th>
-                    <th scope="col" style="font-size: 15px" class = "px-5">province</th>  
+                    <th scope="col" style="font-size: 15px" class = "px-5">province</th>
                     <th scope="col" style="font-size: 15px" class = "px-5">postalCode</th>
                     <th scope="col" style="font-size: 15px" class = "px-5">citizenship</th>
                     <th scope="col" style="font-size: 15px" class = "px-5">email</th>

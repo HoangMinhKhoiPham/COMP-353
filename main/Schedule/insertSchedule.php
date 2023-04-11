@@ -3,9 +3,13 @@ require_once '../../database.php';
 
 $success = false;
 if (isset($conn)) {
-    $optionFetch = $conn->prepare('SELECT * FROM ' . DBNAME . '.Schedule');
+    $optionFetch = $conn->prepare('SELECT id, facilityName FROM ' . DBNAME . '.Facilities order by id');
     $optionFetch->execute();
     $options = $optionFetch->fetchAll();
+
+    $employeeList = $conn->prepare('SELECT id, firstName, lastName FROM ' . DBNAME . '.Employee order by id');
+    $employeeList->execute();
+    $employeeListOption = $employeeList->fetchAll();
 
     if (isset($_POST['submit'])) {
         $employeeID = $_POST['employeeID'];
@@ -66,21 +70,43 @@ if (isset($conn)) {
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="employeeID">Employee ID</label>
-                            <input type="text" class="form-control" id="employeeID" name="employeeID" placeholder="employeeID" required>
+                            <select class="form-select" aria-label="selectEmployee" id="employeeID" name = "employeeID" required>
+                                <?php
+                                if (isset($employeeListOption)) {
+                                    foreach ($employeeListOption as $emp_elem) {
+                                        echo "<option value=" . $emp_elem['id'] . ">" . $emp_elem['id'] . ' - '. $emp_elem['firstName'] . ' '. $emp_elem['lastName'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="facilityID">Facility ID</label>
-                            <input type="text" class="form-control" id="facilityID" name="facilityID" placeholder="facilityID" required>
+                            <select class="form-select" aria-label="selectFacility" id="facilityID" name = "facilityID" required>
+                                <?php
+                                if (isset($options)) {
+                                    foreach ($options as $option) {
+                                        echo "<option value=" . $option['id'] . ">" . $option['facilityName'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-row col-md-6">
+                        <div class="form-group col-md-6">
                             <label for="shiftStart">shiftStart</label>
-                            <input type="text" class="form-control" id="shiftStart" name="shiftStart" placeholder="YYYY/MM/DD HH:MM:SS" required>
+                            <input type="datetime-local" class="form-control" id="shiftStart"
+                                   name = "shiftStart"
+                                   placeholder="YYYY/MM/DD HH:MM:SS"
+                                   required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="shiftEnd">shiftEnd</label>
-                            <input type="text" class="form-control" id="shiftEnd" name="shiftEnd" placeholder="YYYY/MM/DD HH:MM:SS" required>
+                            <input type="datetime-local" class="form-control" id="shiftEnd"
+                                   name = "shiftEnd"
+                                   placeholder="YYYY/MM/DD HH:MM:SS"
+                                   required>
                         </div>
                     </div>
                     <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>

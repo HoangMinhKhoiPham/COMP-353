@@ -1,5 +1,5 @@
 <?php require_once '../../database.php';
-$statement = $conn->prepare('SELECT * FROM Facilities');
+$statement = $conn->prepare('SELECT * FROM Facilities F JOIN Employee E on E.id=F.managerID;');
 $statement->execute(); //executes the query above
 ?>
 
@@ -36,6 +36,7 @@ $statement->execute(); //executes the query above
                             <th scope="col" style="font-size:10px">phoneNumber</th>
                             <th scope="col" style="font-size:10px">facilityName</th>
                             <th scope="col" style="font-size:10px">managerID</th>
+                            <th scope="col" style="font-size:10px">Manager Name</th>
                             <th scope="col" style="font-size:10px">province</th>
                             <th scope="col" style="font-size:10px">city</th>
                             <th scope="col" style="font-size:10px">address</th>
@@ -51,6 +52,7 @@ $statement->execute(); //executes the query above
                                 <td scope="row" style="font-size:10px"><?= $row["phoneNumber"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["facilityName"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["managerID"] ?></td>
+                                <td style="font-size:10px"><?= $row["firstName"] .' ' .$row['lastName'] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["province"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["city"] ?></td>
                                 <td scope="row" style="font-size:10px"><?= $row["address"] ?></td>

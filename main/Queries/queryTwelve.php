@@ -66,88 +66,84 @@ function setEndDate()
 <div id = "page-container">
     <div id = "page-wrap">
         <?php include_once '../navBar.php';?>
-        <div id = "trueSearchBar">
-            <nav class="navbar navbar-light bg-light" style = "margin-left:auto; margin-right:auto;">
-                <form class="form-inline" method = "get">
-                    <input class="form-control mr-sm-2" name = "facilityName" type="search" placeholder="Search by Facility" aria-label="Search" required>
-                    <button class="btn btn-outline-success my-2 my-sm-0" value = "submit" type="submit">Search</button>
-                </form>
-            </nav>
-            <div>
-                <h1 style='text-align:center; font-family:Museosans,serif; margin-top:10px'> Query 12 </h1>
-                <p style='text-align:center; font-family:Museosans,serif; margin-top:10px'>All hours scheduled for all roles for the selected facility for the specified time frame</p>
+        <div>
+            <h1 style='text-align:center; font-family:Museosans,serif; margin-top:10px'> Query 12 </h1>
+            <p style='text-align:center; font-family:Museosans,serif; margin-top:10px'>All hours scheduled for all roles for the selected facility for the specified time frame</p>
 
-                <div id = "queryEditForm" style="margin-top:10px">
-                    <form style="width:100%; padding:30px" method="POST" >
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="facilityID">Facility Selected</label>
-                                <select class="form-select" aria-label="selectFacility" id="facilityID" name = "facilityID" required>
-                                    <?php
-                                    if (isset($options)) {
-                                        foreach ($options as $option) {
-                                            if ($option['id'] == setFacilityId()) {
-                                                echo "<option selected=\"selected\" value=" . $option['id'] . ">" . $option['facilityName'] . "</option>";
-                                            } else {
-                                                echo "<option value=" . $option['id'] . ">" . $option['facilityName'] . "</option>";
-                                            }
-
+            <div id = "queryEditForm" style="margin-top:10px">
+                <form style="width:100%; padding:30px" method="POST" >
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="facilityID">Facility Selected</label>
+                            <select class="form-select" aria-label="selectFacility" id="facilityID" name = "facilityID" required>
+                                <?php
+                                if (isset($options)) {
+                                    foreach ($options as $option) {
+                                        if ($option['id'] == setFacilityId()) {
+                                            echo "<option selected=\"selected\" value=" . $option['id'] . ">" . $option['facilityName'] . "</option>";
+                                        } else {
+                                            echo "<option value=" . $option['id'] . ">" . $option['facilityName'] . "</option>";
                                         }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="start_date">Start Of Time Period</label>
-                                <input type="date" class="form-control" id="start_date"
-                                       name = "start_date"
-                                       placeholder="YYYY-MM-DD"
-                                       value="<?php echo setStartDate()?>"
-                                       required>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="end_date">End Of Time Period</label>
-                                <input type="date" class="form-control" id="end_date"
-                                       name = "end_date"
-                                       placeholder="YYYY-MM-DD"
-                                       value="<?php echo setEndDate()?>"
-                                       required>
-                            </div>
-                            <button type="submit" value="Submit" name = "submit" class="btn btn-ternary">Submit</button>
-                            <?php
-                            if (isset($success) && $success) {
-                                echo "<script> location.href='".BASE_URL."Queries/queryTwelve.php'; </script>";
-                                exit();
-                            } else {
-                                echo "";
-                            }
-                            ?>
 
+                                    }
+                                }
+                                ?>
+                            </select>
                         </div>
-                    </form>
-                </div>
-                <div class="table-condensed">
-                    <table class="table" style= "padding:20px;">
-                        <thead>
-                        <tr class="hoverUpon">
-                            <th scope="col" style="font-size:15px">Role</th>
-                            <th scope="col" style="font-size:15px">Total Hours Scheduled</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                        <div class="form-group col-md-3">
+                            <label for="start_date">Start Of Time Period</label>
+                            <input type="date" class="form-control" id="start_date"
+                                   name = "start_date"
+                                   placeholder="YYYY-MM-DD"
+                                   value="<?php echo setStartDate()?>"
+                                   required>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="end_date">End Of Time Period</label>
+                            <input type="date" class="form-control" id="end_date"
+                                   name = "end_date"
+                                   placeholder="YYYY-MM-DD"
+                                   value="<?php echo setEndDate()?>"
+                                   required>
+                        </div>
+                        <button type="submit" value="Submit" name = "submit" class="btn btn-ternary">Submit</button>
                         <?php
-                        while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) {?>
-                            <tr class="hoverUpon">
-                                <td scope = "row" style="font-size:15px"><?= $row["employeeRole"] ?></td>
-                                <td scope = "row" style="font-size:15px"><?= $row["totalHoursScheduled"] ?></td>
-                            </tr>
-                        <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-                <div id = "footer">
-                    <?php include_once '../footer.php';?>
-                </div>
+                        if (isset($success) && $success) {
+                            echo "<script> location.href='".BASE_URL."Queries/queryTwelve.php'; </script>";
+                            exit();
+                        } else {
+                            echo "";
+                        }
+                        ?>
+
+                    </div>
+                </form>
+            </div>
+            <div class="table-condensed">
+                <table class="table" style= "padding:20px;">
+                    <thead>
+                    <tr class="hoverUpon">
+                        <th scope="col" style="font-size:15px">Role</th>
+                        <th scope="col" style="font-size:15px">Total Hours Scheduled</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    while ($row = $statement->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) {?>
+                        <tr class="hoverUpon">
+                            <td scope = "row" style="font-size:15px"><?= $row["employeeRole"] ?></td>
+                            <td scope = "row" style="font-size:15px"><?= $row["totalHoursScheduled"] ?></td>
+                        </tr>
+                    <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+            <div id = "footer">
+                <?php include_once '../footer.php';?>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 

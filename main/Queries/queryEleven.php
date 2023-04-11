@@ -4,6 +4,10 @@ WHERE facilityID IN (SELECT ID FROM Facilities WHERE facilityName ='Angelic Blos
 AND (employeeRole = 'Doctor' OR employeeRole = 'Nurse')
 ORDER BY employeeRole, firstName asc;"); // to change to school database name
 $statement->execute();
+$optionFetch = $conn->prepare('SELECT id, facilityName FROM ' . DBNAME . '.Facilities order by id');
+$optionFetch->execute();
+$options = $optionFetch->fetchAll();
+
 ?>
 
 
@@ -23,22 +27,35 @@ $statement->execute();
 
 <body>
 
-    <div id="page-container">
-        <div id="page-wrap">
-            <?php include '../navBar.php'; ?>
-            <form class="form-inline" action="getNurseAndDoctor.php" method="GET">
-                <label  class="my-1 mr-2" for="facility">Which facility would you like to see a list of all the nurses and doctors currently working there?</label>
-                <input  style="width: 40%" type="text" class="form-control" name="facility" placeholder="Hospital Maisonneuve Rosemont">
+<div id="page-container">
+    <div id="page-wrap">
+        <?php include '../navBar.php'; ?>
+        <div class="container">
+            <form class="form" action="getNurseAndDoctor.php" method="GET">
+                <label class="md-4" style="margin-top: 15px" for="facility">Which facility would you like to see a list of all the nurses and doctors currently working there?</label>
+                <div class="form-group col-md-6">
+                    <label for="facilityID">Facility ID</label>
+                    <select class="form-select" aria-label="selectFacility" id="facilityID" name = "facilityID" required>
+                        <?php
+                        if (isset($options)) {
+                            foreach ($options as $option) {
+                                echo "<option value=" . $option['id'] . ">" . $option['id'] . ' - '. $option['facilityName'] . "</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
                 <button style="margin: 10px" type="submit" class="btn btn-primary my-1">Submit</button>
             </form>
-            <div class="table-condensed">
-                
-                <div>
-                    <div id="footer">
-                        <?php include '../footer.php'; ?>
+        </div>
+        <div class="table-condensed">
+
+            <div>
+                <div id="footer">
+                    <?php include '../footer.php'; ?>
+                    <div>
                         <div>
                             <div>
-                                <div>
 </body>
 
 </html>
