@@ -1,31 +1,14 @@
-<?php require_once '../../database.php';
-$statement = $conn->prepare("SELECT
-firstName, lastName, startDate, dateOfBirth, email
-FROM
-(SELECT
-e.firstName, e.lastName, w.startDate, e.dateOfBirth, e.email,
-SUM(TIMEDIFF(s.shiftEnd, s.shiftStart)) AS hours
-FROM
-Employee e, WorksAt w, Schedule s
-WHERE
-e.ID = w.employeeID AND w.employeeID = s.employeeID AND e.employeeRole = 'Nurse'
-GROUP BY e.firstName , e.lastName , w.startDate , e.dateOfBirth , e.email) AS nurse_total_hours
-WHERE
-hours = (SELECT
-MAX(hours)
-FROM
-(SELECT
-e.ID, SUM(TIMEDIFF(s.shiftEnd, s.shiftStart)) AS hours
-FROM
-Employee e, Schedule s
-WHERE
-e.ID = s.employeeID
-AND e.employeeRole = 'Nurse'
-GROUP BY e.ID) AS hoursList);"); // to change to school database name
-$statement->execute();
+<?php 
+    require_once '../../database.php';
+    if (isset($_GET['facility'])) {
+        $facility = $_GET['facility'];
+    $statement = $conn->prepare("SELECT firstName, lastName, employeeRole FROM Employee WHERE ID IN (SELECT employeeID FROM Schedule 
+WHERE facilityID IN (SELECT ID FROM facilities WHERE facilityName = '".$facility."') AND (CAST(shiftStart AS DATE) >= (CURDATE() - INTERVAL 14 DAY) AND (CAST(shiftStart AS DATE) <= CURDATE())))
+AND (employeeRole = 'Doctor' OR employeeRole = 'Nurse')
+ORDER BY employeeRole, firstName asc;"); // to change to school database name
+    $statement->execute();
+    }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,16 +30,14 @@ $statement->execute();
             <?php include '../navBar.php'; ?>
             <?php include '../searchBar.php'; ?>
 
-            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Get details of nurse(s) who is/are currently working and has the highest number of hours scheduled in the system since they started working as a nurse (Query 15) </h1>
+            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Nurses And Doctors In <?php echo $_GET['facility'] ?> have been on schedule to work in the last two weeks  (Query 11)</h1>
             <div class="table-condensed">
                 <table class="table" style="padding:20px;margin:20px; width:95%">
                     <thead>
                         <tr class="hoverUpon">
                             <th scope="col" style="font-size: 15px" class="px-5">firstName</th>
                             <th scope="col" style="font-size: 15px" class="px-5">lastName</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">startDate</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">dateOfBirth</th>
-                            <th scope="col" style="font-size: 15px" class="px-5">email</th>
+                            <th scope="col" style="font-size: 15px" class="px-5">employeeRole</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,9 +45,7 @@ $statement->execute();
                             <tr class="hoverUpon">
                                 <td scope="row" style="font-size: 15px" class="px-5"><?= $row["firstName"] ?></td>
                                 <td scope="row" style="font-size: 15px" class="px-5"><?= $row["lastName"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["startDate"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["dateOfBirth"] ?></td>
-                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["email"] ?></td>
+                                <td scope="row" style="font-size: 15px" class="px-5"><?= $row["employeeRole"] ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
