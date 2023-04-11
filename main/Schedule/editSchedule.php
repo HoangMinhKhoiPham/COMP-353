@@ -1,24 +1,26 @@
 <?php
 require_once '../../database.php';
-if (isset($conn)) {
-    $statement = $conn->prepare('SELECT * FROM ' . DBNAME . '.Schedule WHERE Schedule.employeeID = :employeeID AND Schedule.facilityID = :facilityID AND Schedule.shiftStart = :shiftStart;');
-    $statement->bindParam(":employeeID", $employeeID);
-    $statement->bindParam(":facilityID", $facilityID);
-    $statement->bindParam(":shiftStart", $shiftStart);
-    $statement->execute(); //executes the query above
-    $current_case = $statement->fetchAll();
-    $employeeID = $_GET["employeeID"];
-    $facilityID = $_GET["facilityID"];
-    $shiftStart = $_GET["shiftStart"];
 
-    if (isset($_POST['submit'])) {
-        $employeeID = $_POST['employeeID'];
-        $facilityID = $_POST['facilityID'];
-        $shiftStart = $_POST['shiftStart'];
-        $shiftEnd = $_POST['shiftEnd'];
+$statement = $conn->prepare('SELECT * FROM Schedule WHERE Schedule.employeeID = :employeeID AND Schedule.facilityID = :facilityID AND Schedule.shiftStart = :shiftStart;');
+$statement->bindParam(":employeeID", $_GET["employeeID"]);
+$statement->bindParam(":facilityID", $_GET["facilityID"]);
+$statement->bindParam(":shiftStart", $_GET["shiftStart"]);
+$statement->execute(); //executes the query above
+$employeeID = (int) $_GET["employeeID"];
+$facilityID = (int) $_GET["facilityID"];
+$shiftStart = $_GET["shiftStart"];
+$success = false;
+$current_case = $statement->fetchAll();
 
-        // bind the parameters
-        $sql = "UPDATE " . DBNAME . ".Schedule 
+
+if (isset($_POST['submit'])) {
+    $employeeID = $_POST['employeeID'];
+    $facilityID = $_POST['facilityID'];
+    $shiftStart = $_POST['shiftStart'];
+    $shiftEnd = $_POST['shiftEnd'];
+
+    // bind the parameters
+    $sql = "UPDATE " . DBNAME . ".Schedule 
         SET 
         employeeID = :employeeID,
         facilityID = :facilityID,
@@ -29,23 +31,20 @@ if (isset($conn)) {
         facilityID = :facilityID AND
         shiftStart = :shiftStart";
 
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(":shiftEnd", $shiftEnd);
-        $stmt->bindParam(":employeeID", $employeeID);
-        $stmt->bindParam(":facilityID", $facilityID);
-        $stmt->bindParam(":shiftStart", $shiftStart);
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(":shiftEnd", $shiftEnd);
+    $stmt->bindParam(":employeeID", $employeeID);
+    $stmt->bindParam(":facilityID", $facilityID);
+    $stmt->bindParam(":shiftStart", $shiftStart);
 
-        // execute the statement
-        if ($stmt->execute() == TRUE) {
-            // echo "Entries added";
-            $success = true;
-        } else {
-            // echo "Error: " . $sql . "<br>" . $conn->error;
-            $success = false;
-        }
+    // execute the statement
+    if ($stmt->execute() == TRUE) {
+        // echo "Entries added";
+        $success = true;
+    } else {
+        // echo "Error: " . $sql . "<br>" . $conn->error;
+        $success = false;
     }
-} else {
-    print_r("DBO CONN ERROR");
 }
 
 ?>

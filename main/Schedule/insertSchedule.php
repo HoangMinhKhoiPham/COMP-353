@@ -1,39 +1,34 @@
 <?php
 require_once '../../database.php';
 
-$success = false;
-if (isset($conn)) {
-    $optionFetch = $conn->prepare('SELECT * FROM ' . DBNAME . '.Schedule');
-    $optionFetch->execute();
-    $options = $optionFetch->fetchAll();
+$optionFetch = $conn->prepare('SELECT * FROM Schedule');
+$optionFetch->execute();
+$options = $optionFetch->fetchAll();
 
-    if (isset($_POST['submit'])) {
-        $employeeID = $_POST['employeeID'];
-        $facilityID = $_POST['facilityID'];
-        $shiftStart = $_POST['shiftStart'];
-        $shiftEnd = $_POST['shiftEnd'];
+if (isset($_POST['submit'])) {
+    $employeeID = $_POST['employeeID'];
+    $facilityID = $_POST['facilityID'];
+    $shiftStart = $_POST['shiftStart'];
+    $shiftEnd = $_POST['shiftEnd'];
 
-        // prepare the statement
-        $sql = "INSERT INTO " . DBNAME . ".Schedule (employeeID, facilityID, shiftStart, shiftEnd)  
+    // prepare the statement
+    $sql = "INSERT INTO Schedule (employeeID, facilityID, shiftStart, shiftEnd)  
             VALUES (:employeeID, :facilityID, :shiftStart, :shiftEnd)";
-        $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare($sql);
 
-        // bind the parameters
-        $stmt->bindParam(':employeeID', $employeeID);
-        $stmt->bindParam(':facilityID', $facilityID);
-        $stmt->bindParam(':shiftStart', $shiftStart);
-        $stmt->bindParam(':shiftEnd', $shiftEnd);
+    // bind the parameters
+    $stmt->bindParam(':employeeID', $employeeID);
+    $stmt->bindParam(':facilityID', $facilityID);
+    $stmt->bindParam(':shiftStart', $shiftStart);
+    $stmt->bindParam(':shiftEnd', $shiftEnd);
 
 
-        // execute the statement
-        if ($stmt->execute()) {
-            $success = true;
-        } else {
-            $success = false;
-        }
+    // execute the statement
+    if ($stmt->execute()) {
+        $success = true;
+    } else {
+        $success = false;
     }
-} else {
-    print_r("DBO CONN ERROR");
 }
 ?>
 
