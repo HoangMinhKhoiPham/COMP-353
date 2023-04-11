@@ -1,30 +1,20 @@
 <?php
 require_once '../../database.php';
 
-$maxIDFetch = $conn->prepare('SELECT max(Vaccine.vaccineID) FROM ' . DBNAME . '.Vaccine');
+$maxIDFetch = $conn->prepare('SELECT max(Vaccine.vaccineID) FROM Vaccine');
 $maxIDFetch->execute();
-$maxFacilitiesID = $maxIDFetch->fetchColumn();
-$id = $maxFacilitiesID + 1;
+$maxVaccineID = $maxIDFetch->fetchColumn();
+$id = $maxVaccineID + 1;
 
 if (isset($_POST['submit'])) {
-    $vaccineID = $_POST['vaccineID'];
     $vaccineType = $_POST['vaccineType'];
     $timeBeforeExpirationInMonth = $_POST['timeBeforeExpirationInMonth'];
 
-    // bind the parameters
-    $sql = "UPDATE " . DBNAME . ".Vaccine 
-        SET
-        vaccineID = :vaccineID,
-        vaccineType = :vaccineType,
-        timeBeforeExpirationInMonth = :timeBeforeExpirationInMonth
-        WHERE vaccineID = :vaccineID;";
-
     // prepare the statement
-    $sql = "INSERT INTO " . DBNAME . ".Vaccine (vaccineID, vaccineType, timeBeforeExpirationInMonth) VALUES (:vaccineID, :vaccineType, :timeBeforeExpirationInMonth)";
+    $sql = "INSERT INTO Vaccine (vaccineType, timeBeforeExpirationInMonth) VALUES ( :vaccineType, :timeBeforeExpirationInMonth)";
     $stmt = $conn->prepare($sql);
 
     // bind the parameters
-    $stmt->bindParam(':vaccineID', $vaccineID);
     $stmt->bindParam(":vaccineType", $vaccineType);
     $stmt->bindParam(":timeBeforeExpirationInMonth", $timeBeforeExpirationInMonth);
 

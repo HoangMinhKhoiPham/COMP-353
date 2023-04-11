@@ -1,49 +1,42 @@
 <?php
 require_once '../../database.php';
-if (isset($conn)) {
-    $optionFetch = $conn->prepare('SELECT * FROM ' . DBNAME . '.Vaccine');
-    $optionFetch->execute();
-    $options = $optionFetch->fetchAll();
 
-    $statement = $conn->prepare('SELECT * FROM ' . DBNAME . '.Vaccine WHERE Vaccine.vaccineID = :vaccineID;');
-    $statement->bindParam(":vaccineID", $_GET["ID"]);
-    $statement->execute(); //executes the query above
-    $id = $_GET["ID"];
+$statement = $conn->prepare('SELECT * FROM Vaccine WHERE Vaccine.vaccineID = :vaccineID;');
+$statement->bindParam(":vaccineID", $_GET["ID"]);
+$statement->execute(); //executes the query above
+$vaccineID = (int) $_GET["ID"];
+$success = false;
 
-    $current_case = $statement->fetchAll();
+if (isset($_POST['submit'])) {
+    $values = array(
+        $vaccineType = $_POST['vaccineType'],
+        $timeBeforeExpirationInMonth = $_POST['timeBeforeExpirationInMonth'],
+    );
+    // filter out empty values
+    $values = array_filter($values);
 
-    if (isset($_POST['submit'])) {
-        $vaccineID = $_POST['vaccineID'];
-        $vaccineType = $_POST['vaccineType'];
-        $timeBeforeExpirationInMonth = $_POST['timeBeforeExpirationInMonth'];
+    if ($values) {
+        $query = "UPDATE Vaccine SET ";
 
-        // bind the parameters
-        $sql = "UPDATE " . DBNAME . ".Vaccine 
-        SET
-        vaccineID = :vaccineID,
-        vaccineType = :vaccineType,
-        timeBeforeExpirationInMonth = :timeBeforeExpirationInMonth
-        WHERE vaccineID = :vaccineID;";
-
-        error_log($sql);
-
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':vaccineID', $vaccineID);
-        $stmt->bindParam(':vaccineType', $vaccineType);
-        $stmt->bindParam(':timeBeforeExpirationInMonth', $timeBeforeExpirationInMonth);
-
-        // execute the statement
-        if ($stmt->execute()) {
-            $success = true;
-        } else {
-            $success = false;
+        $valuesQuery = array();
+        foreach ($values as $key=>$value)
+            $valuesQuery[] = "$key=:$key";
+        
+        $query .= implode(', ', $valuesQuery);
+        $query .= ' WHERE vaccineID=:vaccineID;';
+        var_dump($query);
+        $stmt = $conn->prepare($query);
+        foreach ($values as $key=>$value) {
+            $stmt->bindValue($key, $value);
         }
+        $stmt->bindParam(':vaccineID', $vaccineID);
+    // execute the statement
+    if ($stmt->execute()) {
+        $success = true;
+    } else {
+        $success = false;
     }
-} else {
-    print_r("DBO CONN ERROR");
 }
-
-
 ?>
 
 <!DOCTYPE html>

@@ -32,15 +32,13 @@ if (isset($_POST['submit'])) {
     $stmt->bindParam(":webAddress", $webAddress);
 
     // execute the statement
-  
+
     if ($stmt->execute()) {
         // echo "Entries added";
         $success = true;
     } else {
         $success = false;
-
     }
-    
 }
 
 
