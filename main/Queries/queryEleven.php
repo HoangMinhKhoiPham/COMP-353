@@ -1,6 +1,6 @@
 <?php require_once '../../database.php';
 $statement = $conn->prepare("SELECT firstName, lastName, employeeRole FROM Employee WHERE ID IN (SELECT employeeID FROM Schedule 
-WHERE facilityID IN (SELECT ID FROM facilities WHERE facilityName ='Angelic Blossom Hospital Center') AND (CAST(shiftStart AS DATE) >= (CURDATE() - INTERVAL 14 DAY) AND (CAST(shiftStart AS DATE) <= CURDATE())))
+WHERE facilityID IN (SELECT ID FROM Facilities WHERE facilityName ='Angelic Blossom Hospital Center') AND (CAST(shiftStart AS DATE) >= (CURDATE() - INTERVAL 14 DAY) AND (CAST(shiftStart AS DATE) <= CURDATE())))
 AND (employeeRole = 'Doctor' OR employeeRole = 'Nurse')
 ORDER BY employeeRole, firstName asc;"); // to change to school database name
 $statement->execute();
