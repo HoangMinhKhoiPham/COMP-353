@@ -21,7 +21,6 @@ $statement->execute(); //executes the query above
   <div id = "page-container">
           <div id = "page-wrap">
               <?php include '../navBar.php';?>
-              <?php include '../searchBar.php';?>
               
               <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> Employee </h1>
               <div class="table-condensed">

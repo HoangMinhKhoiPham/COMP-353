@@ -1,5 +1,5 @@
 <?php require_once '../../database.php';
-
+$searchBar = true;
 if (isset($_POST['submit'])) {
     $facilityName = $_POST['facilityName'];
     $statement = $conn->prepare('SELECT * FROM '.DBNAME.'.logTable WHERE sender = :facilityName');
@@ -34,7 +34,7 @@ else{
               <?php include '../navBar.php';?>
               <div id = "trueSearchBar"> 
                     <nav class="navbar navbar-light bg-light" style = "margin-left:auto; margin-right:auto;">
-                     <form class="form-inline" action = "./queryTenRedirect.php"method = "get">
+                     <form class="form-inline" action = "../Queries/queryTenRedirect.php"method = "get">
                         <input class="form-control mr-sm-2" name = "facilityName" type="search" placeholder="Search by Facility" aria-label="Search" required>
                         <button class="btn btn-outline-success my-2 my-sm-0" value = "submit" type="submit">Search</button>
                      </form>
