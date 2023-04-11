@@ -29,8 +29,8 @@
                             Employee
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>/Employee/displayEmployees.php">Display Employee</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>/Employee/insertIntoEmployee.php">Insert Into Employee</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>Employee/displayEmployees.php">Display Employee</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>Employee/insertIntoEmployee.php">Insert Into Employee</a></li>
                         </ul>
                     </div>
                 </li>
@@ -42,8 +42,8 @@
                             Facility
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>/Facility/displayFacilities.php">Display Facilities</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>/Facility/insertFacilities.php">Insert Into Facilities</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>Facility/displayFacilities.php">Display Facilities</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>Facility/insertFacilities.php">Insert Into Facilities</a></li>
                         </ul>
                     </div>
                 </li>
@@ -78,8 +78,8 @@
                             Schedule
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>/Schedule/displaySchedule.php">Display Schedules</a></li>
-                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>/Schedule/insertSchedule.php">Insert Into Schedules</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>Schedule/displaySchedule.php">Display Schedules</a></li>
+                            <li><a class="dropdown-item" href="<?php echo BASE_URL  ?>Schedule/insertSchedule.php">Insert Into Schedules</a></li>
                         </ul>
                     </div>
                 </li>

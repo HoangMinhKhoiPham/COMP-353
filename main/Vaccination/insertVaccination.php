@@ -3,21 +3,13 @@ require_once '../../database.php';
 
 $maxIDFetch = $conn->prepare('SELECT max(Vaccine.vaccineID) FROM ' . DBNAME . '.Vaccine');
 $maxIDFetch->execute();
-$maxFacilitiesID = $maxIDFetch->fetchColumn();
-$id = $maxFacilitiesID + 1;
+$maxVaccineID = $maxIDFetch->fetchColumn();
+$id = $maxVaccineID + 1;
 
 if (isset($_POST['submit'])) {
     $vaccineID = $_POST['vaccineID'];
     $vaccineType = $_POST['vaccineType'];
     $timeBeforeExpirationInMonth = $_POST['timeBeforeExpirationInMonth'];
-
-    // bind the parameters
-    $sql = "UPDATE " . DBNAME . ".Vaccine 
-        SET
-        vaccineID = :vaccineID,
-        vaccineType = :vaccineType,
-        timeBeforeExpirationInMonth = :timeBeforeExpirationInMonth
-        WHERE vaccineID = :vaccineID;";
 
     // prepare the statement
     $sql = "INSERT INTO " . DBNAME . ".Vaccine (vaccineID, vaccineType, timeBeforeExpirationInMonth) VALUES (:vaccineID, :vaccineType, :timeBeforeExpirationInMonth)";
@@ -63,22 +55,27 @@ if (isset($_POST['submit'])) {
             <?php include '../navBar.php'; ?>
             <?php include '../searchBar.php'; ?>
 
-            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> Insert a facility record </h1>
+            <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> Insert a vaccine record </h1>
             <div id="insertEmployeeForm" style="margin-top:10px">
 
                 <form style="width:100%; padding:30px" method="POST">
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="vaccineID">vaccine ID</label>
+                        <div class="form-group col-md-4">
+                            <label for="vaccineID">Vaccine ID</label>
                             <input type="text" class="form-control" id="vaccineID" name="vaccineID" placeholder="vaccineID" required>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="vaccitimeBeforeExpirationInMonth">Time Before Expiration In Month</label>
                             <input type="text" class="form-control" id="timeBeforeExpirationInMonth" name="timeBeforeExpirationInMonth" placeholder="timeBeforeExpirationInMonth" required>
                         </div>
+                        <div class="form-group col-md-4">
+                            <label for="vaccineType">Vaccine Type</label>
+                            <input type="text" class="form-control" id="vaccineType" name="vaccineType" placeholder="vaccineType" required>
+                        </div>
                     </div>
+                    <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>
+
             </div>
-            <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>
             <?php
             if (isset($success) && $success) {
                 echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Entry Added</h3>';
