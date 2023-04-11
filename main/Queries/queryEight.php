@@ -65,13 +65,6 @@ function setEndDate()
 <div id = "page-container">
     <div id = "page-wrap">
         <?php include_once '../navBar.php';?>
-        <div id = "trueSearchBar">
-            <nav class="navbar navbar-light bg-light" style = "margin-left:auto; margin-right:auto;">
-                <form class="form-inline" method = "get">
-                    <input class="form-control mr-sm-2" name = "facilityName" type="search" placeholder="Search by Facility" aria-label="Search" required>
-                    <button class="btn btn-outline-success my-2 my-sm-0" value = "submit" type="submit">Search</button>
-                </form>
-            </nav>
             <div>
                 <h1 style='text-align:center; font-family:Museosans,serif; margin-top:10px'> Query 8 </h1>
                 <p style='text-align:center; font-family:Museosans,serif; margin-top:10px'>Details of all hours of given employee within the specified time frame</p>

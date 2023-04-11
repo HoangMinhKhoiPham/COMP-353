@@ -1,10 +1,7 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `generateEmail`(
-	IN employeeID INT,
-    IN facilityID INT,
-    IN today DATE,
-    OUT emailTitle VARCHAR(255),
-    OUT emailBody MEDIUMTEXT
-)
+create
+    definer = vbc353_4@`172.16.0.0/255.240.0.0` procedure generateEmail(IN employeeID int, IN facilityID int,
+                                                                        IN today date, OUT emailTitle varchar(255),
+                                                                        OUT emailBody mediumtext)
 BEGIN
 DECLARE schedule1Day MEDIUMTEXT;
 DECLARE schedule2Day MEDIUMTEXT;
@@ -24,7 +21,7 @@ CALL getScheduleForDay(employeeID, facilityID, today + 6,  schedule6Day);
 CALL getScheduleForDay(employeeID, facilityID, today + 7,  schedule7Day);
 
 SET emailTitle = CONCAT(
-	(SELECT facilityName FROM facilities WHERE facilityID = id),
+	(SELECT facilityName FROM Facilities WHERE facilityID = id),
 	' for ',
 	DAYNAME(today + 1),
     ' ',
@@ -38,7 +35,7 @@ SET emailTitle = CONCAT(
 
 SET emailBody = CONCAT(
 	'Hello ', (SELECT CONCAT(firstName, ' ', lastName, ' - ', email) FROM Employee WHERE id = employeeID), ',\n',
-    (SELECT CONCAT('Your schedule for ', facilityName, ' (', address, ') is:\n') FROM facilities WHERE id = facilityID),
+    (SELECT CONCAT('Your schedule for ', facilityName, ' (', address, ') is:\n') FROM Facilities WHERE id = facilityID),
     DAYNAME(today + 1), '\n', CAST(schedule1Day AS CHAR), '\n\n',
     DAYNAME(today + 2), '\n', CAST(schedule2Day AS CHAR), '\n\n',
     DAYNAME(today + 3), '\n', CAST(schedule3Day AS CHAR), '\n\n',
@@ -48,4 +45,5 @@ SET emailBody = CONCAT(
     DAYNAME(today + 7), '\n', CAST(schedule7Day AS CHAR), '\n\n'
 );
 -- SET emailBody = @schedule1Day;
-END
+END;
+

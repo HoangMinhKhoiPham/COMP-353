@@ -1,7 +1,10 @@
 <?php 
 require_once '../../database.php';
-$statement = $conn->prepare('SELECT * FROM '.DBNAME.'.logTable WHERE sender = :tempo; ORDER BY date ASC');
-$statement->bindParam(":tempo", $_GET["facilityName"]);
+$searchBar = true;
+$statement = $conn->prepare('SELECT * FROM '.DBNAME.'.logTable WHERE sender LIKE :tempo; ORDER BY date ASC');
+$search_input = '%'. $_GET["facilityName"] . '%';
+error_log($search_input);
+$statement->bindParam(":tempo", $search_input);
 $statement->execute(); //executes the query above
 ?>
 
@@ -14,7 +17,7 @@ $statement->execute(); //executes the query above
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DisplayFacilityTable</title>
-    <link rel ="stylesheet" href="displayEmployees.css">
+    <link rel ="stylesheet" href="../../css/displayTable.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
@@ -24,6 +27,7 @@ $statement->execute(); //executes the query above
           <div id = "page-wrap">
               <?php include '../navBar.php';?>              
               <h1 style='text-align:center; font-family:Museosans; margin-top:10px'> List of Emails by Facility (Query 10) </h1>
+              <h2 style='text-align:center; font-family:Museosans; margin-top:10px'> Search Results for : <?php echo $_GET["facilityName"]; ?> </h2>
               <div class="table-condensed">
               <table class="table" style= "padding:20px;">
                 <thead>
@@ -55,7 +59,7 @@ $statement->execute(); //executes the query above
                 <div>
               <div>
                 <div id = "footer">
-              <?php include 'footer.php';?>
+              <?php include '../footer.php';?>
               <div>
           <div>
       <div>
