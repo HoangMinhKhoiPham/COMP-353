@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
             $valuesQuery[] = "$key=:$key";
         
         $query .= implode(', ', $valuesQuery);
-        $query .= ' WHERE employeeID=:employeeID AND facilityID = :facilityID AND shiftStart = :shiftStar;';
+        $query .= ' WHERE employeeID=:employeeID AND facilityID = :facilityID AND shiftStart = :shiftStart;';
         var_dump($query);
         $stmt = $conn->prepare($query);
         foreach ($values as $key=>$value) {
