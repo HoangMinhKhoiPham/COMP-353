@@ -1,18 +1,10 @@
 <?php require_once '../../database.php';
-if (isset($conn)) {
-    $statement = $conn->prepare('DELETE FROM ' . DBNAME . '.Schedule WHERE Schedule.employeeID = :employeeID AND Schedule.facilityID = :facilityID AND Schedule.shiftStart = :shiftStart;');
-    $statement->bindParam(":employeeID", $employeeID);
-    error_log(print_r($_GET, true));
-    $statement->bindParam(":facilityID", $facilityID);
-    error_log(print_r($_GET, true));
-    $statement->bindParam(":shiftStart", $shiftStart);
-    error_log(print_r($_GET, true));
-    $statement->execute(); //executes the query above
-    $employeeID = $_GET["employeeID"];
-    $facilityID = $_GET["facilityID"];
-    $shiftStart = $_GET["shiftStart"];
-}
-header("Location: ../../main/Schedule/displaySchedule.php")
+$statement = $conn->prepare('DELETE FROM Schedule WHERE Schedule.employeeID = :employeeID AND Schedule.facilityID = :facilityID AND Schedule.shiftStart = :shiftStart;');
+$statement->bindParam(":employeeID", $_GET["employeeID"]);
+$statement->bindParam(":facilityID", $_GET["facilityID"]);
+$statement->bindParam(":shiftStart", $_GET["shiftStart"]);
+$statement->execute(); //executes the query above
+header("Location: ./displaySchedule.php")
 ?>
 
 <!DOCTYPE html>

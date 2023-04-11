@@ -1,8 +1,8 @@
 <?php require_once '../database.php';
-$statement = $conn->prepare('DELETE FROM ' . DBNAME . '.Vaccine where Vaccine.vaccineID = :vaccineID');
+$statement = $conn->prepare('DELETE FROM Vaccine where Vaccine.vaccineID = :vaccineID');
 $statement->bindParam(":vaccineID", $_GET["ID"]);
 $statement->execute(); //executes the query above
-header("Location: ../../main/Vaccination/displayVaccination.php")
+header("Location: ./displayVaccination.php")
 ?>
 
 <!DOCTYPE html>
