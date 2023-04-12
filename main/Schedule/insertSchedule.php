@@ -29,14 +29,14 @@ if (isset($conn)) {
         $stmt->bindParam(':shiftEnd', $shiftEnd);
 
 
-    // execute the statement
-    if ($stmt->execute()) {
-        $success = true;
-    } else {
-        $success = false;
-        $error = $stmt->errorInfo();
-        echo "Error: " . $error[2];
-
+        // execute the statement
+        if ($stmt->execute()) {
+            $success = true;
+        } else {
+            $success = false;
+            $error = $stmt->errorInfo();
+            echo "Error: " . $error[2];
+        }
     }
 } else {
     print_r("DBO CONN ERROR");
@@ -73,11 +73,11 @@ if (isset($conn)) {
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="employeeID">Employee ID</label>
-                            <select class="form-select" aria-label="selectEmployee" id="employeeID" name = "employeeID" required>
+                            <select class="form-select" aria-label="selectEmployee" id="employeeID" name="employeeID" required>
                                 <?php
                                 if (isset($employeeListOption)) {
                                     foreach ($employeeListOption as $emp_elem) {
-                                        echo "<option value=" . $emp_elem['id'] . ">" . $emp_elem['id'] . ' - '. $emp_elem['firstName'] . ' '. $emp_elem['lastName'] . "</option>";
+                                        echo "<option value=" . $emp_elem['id'] . ">" . $emp_elem['id'] . ' - ' . $emp_elem['firstName'] . ' ' . $emp_elem['lastName'] . "</option>";
                                     }
                                 }
                                 ?>
@@ -85,7 +85,7 @@ if (isset($conn)) {
                         </div>
                         <div class="form-group col-md-6">
                             <label for="facilityID">Facility ID</label>
-                            <select class="form-select" aria-label="selectFacility" id="facilityID" name = "facilityID" required>
+                            <select class="form-select" aria-label="selectFacility" id="facilityID" name="facilityID" required>
                                 <?php
                                 if (isset($options)) {
                                     foreach ($options as $option) {
@@ -99,17 +99,11 @@ if (isset($conn)) {
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="shiftStart">shiftStart</label>
-                            <input type="datetime-local" class="form-control" id="shiftStart"
-                                   name = "shiftStart"
-                                   placeholder="YYYY/MM/DD HH:MM:SS"
-                                   required>
+                            <input type="datetime-local" class="form-control" id="shiftStart" name="shiftStart" placeholder="YYYY/MM/DD HH:MM:SS" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="shiftEnd">shiftEnd</label>
-                            <input type="datetime-local" class="form-control" id="shiftEnd"
-                                   name = "shiftEnd"
-                                   placeholder="YYYY/MM/DD HH:MM:SS"
-                                   required>
+                            <input type="datetime-local" class="form-control" id="shiftEnd" name="shiftEnd" placeholder="YYYY/MM/DD HH:MM:SS" required>
                         </div>
                     </div>
                     <button type="submit" value="Submit" name="submit" class="btn btn-primary">Submit</button>
