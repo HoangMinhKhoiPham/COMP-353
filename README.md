@@ -2,7 +2,7 @@
 Group project for comp-353 #VBC353_4
 </br>
 Conceptual DB Design (E/R Diagram)
-![Screen Shot 2023-04-08 at 12 42 46](https://user-images.githubusercontent.com/97756628/230732944-9c97c4be-c203-43c0-b64a-ab92fe837a91.png)
+![E_R Diagram drawio (4)](https://user-images.githubusercontent.com/97756628/231352355-65c7be01-15a7-4c16-b0a3-7b7e1a560894.png)
 <h2>Project Description</h2> 
 <ul>
   <li>In this project, we will develop a Health Facility Employee Status Tracking System website where core features will be implemented. This system builds on and extends the application developed in the warm-up project. It adds some new functionalities and requires a Graphical User Interface to facilitate user interaction with the system.</li>
@@ -32,13 +32,13 @@ Conceptual DB Design (E/R Diagram)
     <li>Hoang Minh Khoi Pham (40162551)
         <ul>
             <li>Username: HoangMinhKhoiPham</li>
-            <li>Role/Strength: Backend Developer</li>
+            <li>Role/Strength: FullStack Developer</li>
         </ul>
     </li>
     <li>Thi Mai ANh Nguyen (40208493)
         <ul>
             <li>Username: maianh2611</li>
-            <li>Role/Strength: Backend Developer</li>
+            <li>Role/Strength: FullStack Developer</li>
         </ul>
     </li>
     <li>ZhuoZhang Cui (40213581)
@@ -50,13 +50,16 @@ Conceptual DB Design (E/R Diagram)
         <li>Oliver Phan (40096496)
         <ul>
             <li>Username: Olivier_P</li>
-            <li>Role/Strength: Backend Developer</li>
+            <li>Role/Strength: FullStack Developer</li>
         </ul>
     </li>
 </ul>
 <hr>
 Google Drive Folder : https://drive.google.com/drive/u/1/folders/11eXVVyZKY9gljoepumbz4BTpdqQz9Ajr
 <br/>
-Website Link: https://vbc353.encs.concordia.ca/
+Website Link: https://vbc353.encs.concordia.ca/COMP-353/main/homePage.php
 <br/>
+Username: vbc353_4
+<br/>
+Pw: GroupCOM
 
