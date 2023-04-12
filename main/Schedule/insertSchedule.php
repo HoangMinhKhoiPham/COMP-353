@@ -35,7 +35,6 @@ if (isset($conn)) {
         } else {
             $success = false;
             $error = $stmt->errorInfo();
-            echo "Error: " . $error[2];
         }
     }
 } else {
@@ -111,7 +110,7 @@ if (isset($conn)) {
                     if (isset($success) && $success) {
                         echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">Entry Added</h3>';
                     } else {
-                        echo "";
+                        echo '<h3 style="color:green; text-align:center;font-family:Museosans;transition: color 1s ease-in 1s">' . $error[2] . '</h3>';
                     }
                     ?>
                 </form>
